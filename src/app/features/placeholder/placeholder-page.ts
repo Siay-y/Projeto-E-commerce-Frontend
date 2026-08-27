@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 
 import { CatalogStore } from '../../core/catalog/catalog-store';
-import { CartStore } from '../../core/cart/cart-store';
+import { CartStore, lineFor } from '../../core/cart/cart-store';
 import { CATEGORIES } from '../../core/catalog/category';
 import { Product } from '../../core/catalog/product';
 import { Button } from '../../shared/ui/button/button';
@@ -100,6 +100,6 @@ export class PlaceholderPage {
   );
 
   protected addToCart(product: Product): void {
-    this.cart.add({ id: product.id, title: product.title, unitPrice: product.price });
+    this.cart.add(lineFor(product));
   }
 }

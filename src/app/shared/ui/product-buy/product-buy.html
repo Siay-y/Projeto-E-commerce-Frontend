@@ -1,0 +1,94 @@
+<div class="by__pricing">
+  <p class="by__price">
+    @if (wasLabel(); as was) {
+      <s class="by__was">{{ was }}</s>
+    }
+    <span class="by__now">{{ priceLabel() }}</span>
+  </p>
+
+  @if (installment(); as parcel) {
+    <p class="by__parcel">Em até {{ parcel.count }}&times; de {{ parcel.value }} sem juros</p>
+  }
+</div>
+
+@if (axis(); as axis) {
+  <fieldset class="by__options">
+    <legend class="by__legend">{{ axis.legend }}</legend>
+
+    <div class="by__swatches">
+      @for (choice of choices(); track choice.option.id) {
+        <label class="by__swatch">
+          <input
+            class="by__radio"
+            type="radio"
+            name="opcao"
+            [value]="choice.option.id"
+            [checked]="choice.option.id === chosenId()"
+            [disabled]="choice.out"
+            (change)="chosenId.set(choice.option.id)"
+          />
+          <span class="by__label">{{ choice.option.label }}</span>
+          @if (choice.price; as price) {
+            <span class="by__swatch-price">{{ price }}</span>
+          }
+          @if (choice.out) {
+            <span class="sr-only">esgotado</span>
+          }
+        </label>
+      }
+    </div>
+
+    @if (option()?.note; as hint) {
+      <p class="by__hint">{{ hint }}</p>
+    }
+  </fieldset>
+}
+
+<p class="by__note" [attr.data-tone]="note().tone" role="status">{{ note().text }}</p>
+
+<div class="by__buy">
+  <label class="by__qty">
+    <span class="sr-only">Quantidade</span>
+    <select
+      class="by__select"
+      [disabled]="soldOut()"
+      [value]="quantity()"
+      (change)="setQuantity($event)"
+    >
+      @for (amount of quantities(); track amount) {
+        <option [value]="amount">{{ amount }}</option>
+      }
+    </select>
+  </label>
+
+  <button
+    appButton
+    class="by__add"
+    type="button"
+    variant="accent"
+    size="lg"
+    [block]="true"
+    [disabled]="soldOut()"
+    (click)="addToCart()"
+  >
+    @if (!soldOut()) {
+      <app-icon name="plus" [size]="19" />
+    }
+    {{ soldOut() ? 'Esgotado' : 'Adicionar ao carrinho' }}
+  </button>
+</div>
+
+@if (inCart() > 0) {
+  <p class="by__incart" role="status">
+    @if (option(); as chosen) {
+      {{ inCart() }} no carrinho, {{ chosen.label }}
+    } @else {
+      {{ inCart() }} no carrinho
+    }
+  </p>
+}
+
+<p class="by__ship">
+  <app-icon name="truck" [size]="17" />
+  {{ shipping() }}
+</p>

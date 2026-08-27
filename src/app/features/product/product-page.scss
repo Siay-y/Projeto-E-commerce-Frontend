@@ -1,0 +1,292 @@
+// -----------------------------------------------------------------------------
+// Página do produto.
+// -----------------------------------------------------------------------------
+:host {
+  display: block;
+  padding-bottom: var(--sp-9);
+}
+
+.pd__crumb {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--sp-4) var(--sp-4) 0;
+}
+
+.pd__crumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-muted);
+  font-size: var(--fs-xs);
+}
+
+.pd__crumb li + li::before {
+  content: '/';
+  margin-right: var(--sp-2);
+  color: var(--ink-subtle);
+}
+
+.pd__crumb a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.pd__crumb a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pd__crumb [aria-current] {
+  color: var(--ink);
+}
+
+// -----------------------------------------------------------------------------
+// Duas colunas
+// -----------------------------------------------------------------------------
+.pd {
+  display: grid;
+  gap: var(--sp-5);
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--sp-5) var(--sp-4) 0;
+}
+
+.pd__frame {
+  position: relative;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-6);
+
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background-color: var(--surface-sunken);
+  background-image: var(--pattern-hatch);
+  overflow: hidden;
+}
+
+.pd__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.pd__mark {
+  display: inline-flex;
+  color: var(--ink-subtle);
+  opacity: 0.5;
+}
+
+.pd__flags {
+  position: absolute;
+  top: var(--sp-3);
+  left: var(--sp-3);
+}
+
+// -----------------------------------------------------------------------------
+// Coluna de compra
+// -----------------------------------------------------------------------------
+.pd__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.pd__anime {
+  color: var(--accent);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.pd__title {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+.pd__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.pd__tag {
+  padding: 0.2rem var(--sp-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-full);
+  color: var(--ink-muted);
+  font-size: var(--fs-xs);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.pd__tag:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.pd__rating {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--ink-muted);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.pd__star {
+  width: 15px;
+  height: 15px;
+  color: var(--ink);
+}
+
+.pd__votes {
+  color: var(--ink-subtle);
+}
+
+.pd__lede {
+  max-width: 52ch;
+  color: var(--ink-muted);
+  line-height: var(--lh-normal);
+  text-wrap: pretty;
+}
+
+.pd__buy {
+  margin-top: var(--sp-2);
+}
+
+// -----------------------------------------------------------------------------
+// Detalhes
+// -----------------------------------------------------------------------------
+// `auto-fit` e nao `1fr 1fr`: produto sem ficha tecnica tem um painel so, e
+// com duas trilhas fixas ele ficaria com metade da faixa vazia ao lado.
+.pd__more {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
+  align-items: start;
+  gap: var(--sp-5);
+  max-width: 1240px;
+  margin: var(--sp-7) auto 0;
+  padding-inline: var(--sp-4);
+}
+
+.pd__panel {
+  padding: var(--sp-5);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-raised);
+}
+
+.pd__h2 {
+  font-size: var(--fs-lg);
+}
+
+.pd__bullets {
+  max-width: 62ch;
+  margin: var(--sp-4) 0 0;
+  padding-left: var(--sp-5);
+  color: var(--ink-muted);
+  line-height: var(--lh-normal);
+}
+
+.pd__bullets li + li {
+  margin-top: var(--sp-2);
+}
+
+.pd__specs {
+  margin: var(--sp-4) 0 0;
+}
+
+.pd__spec {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding-block: var(--sp-3);
+  border-top: 1px solid var(--border);
+  font-size: var(--fs-sm);
+}
+
+.pd__spec:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.pd__spec dt {
+  color: var(--ink-muted);
+}
+
+.pd__spec dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+
+.pd__shelf {
+  display: block;
+  max-width: 1240px;
+  margin: var(--sp-8) auto 0;
+  padding-inline: var(--sp-4);
+}
+
+// -----------------------------------------------------------------------------
+// Produto inexistente
+// -----------------------------------------------------------------------------
+.pd__gone {
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: var(--sp-9) var(--sp-4);
+  text-align: center;
+}
+
+.pd__gone-mark {
+  display: inline-flex;
+  color: var(--ink-subtle);
+  opacity: 0.5;
+}
+
+.pd__gone-title {
+  margin-top: var(--sp-4);
+  font-size: var(--fs-xl);
+  text-wrap: balance;
+}
+
+.pd__gone-text {
+  margin-top: var(--sp-3);
+  color: var(--ink-muted);
+  line-height: var(--lh-normal);
+  text-wrap: pretty;
+}
+
+.pd__gone-link {
+  display: inline-block;
+  margin-top: var(--sp-5);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (min-width: 60rem) {
+  .pd,
+  .pd__crumb,
+  .pd__more,
+  .pd__shelf {
+    padding-inline: var(--sp-5);
+  }
+
+  .pd {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 27rem);
+    gap: var(--sp-7);
+  }
+
+  .pd__media {
+    position: sticky;
+    top: 7.5rem;
+  }
+}

@@ -18,7 +18,10 @@ const BASE: Product = {
 describe('ProductCard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideZonelessChangeDetection(), provideRouter([])],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideRouter([{ path: 'produto/:slug', children: [] }]),
+      ],
     });
   });
 
@@ -31,7 +34,9 @@ describe('ProductCard', () => {
 
   function flags(fixture: ComponentFixture<ProductCard>) {
     const host = fixture.nativeElement as HTMLElement;
-    return [...host.querySelectorAll('.pc__flag')].map((el) => el.textContent?.trim());
+    return [...host.querySelectorAll('app-product-flags li')].map((el) =>
+      el.textContent?.trim(),
+    );
   }
 
   function addButton(fixture: ComponentFixture<ProductCard>) {
@@ -157,5 +162,62 @@ describe('ProductCard', () => {
     expect(addButton(fixture).getAttribute('aria-label')).toBe(
       'Adicionar Colar Pochita em prata 925 ao carrinho',
     );
+  });
+
+  describe('produto com tamanho', () => {
+    const CAMISA: Partial<Product> = {
+      options: {
+        axis: 'size',
+        values: [
+          { id: 'p', label: 'P', availability: { kind: 'stock', units: 4 } },
+          { id: 'gg', label: 'GG', availability: { kind: 'stock', units: 0 } },
+        ],
+      },
+    };
+
+    it('leva à página em vez de adicionar sem escolha', async () => {
+      const fixture = await render(CAMISA);
+      const seen: Product[] = [];
+      fixture.componentInstance.add.subscribe((product) => seen.push(product));
+
+      const button = addButton(fixture);
+      expect(button.textContent?.trim()).toBe('Escolher tamanho');
+
+      button.click();
+      expect(seen).toHaveLength(0);
+    });
+
+    it('só esgota quando nenhum tamanho sobra', async () => {
+      const sobrou = await render(CAMISA);
+      expect(flags(sobrou)).not.toContain('Esgotado');
+
+      const acabou = await render({
+        options: {
+          axis: 'size',
+          values: [
+            { id: 'p', label: 'P', availability: { kind: 'stock', units: 0 } },
+            { id: 'gg', label: 'GG', availability: { kind: 'stock', units: 0 } },
+          ],
+        },
+      });
+      expect(flags(acabou)).toEqual(['Esgotado']);
+    });
+
+    it('anuncia o menor preço quando as opções custam diferente', async () => {
+      const fixture = await render({
+        price: 590,
+        options: {
+          axis: 'scale',
+          values: [
+            { id: 'p', label: '60 cm', price: 590 },
+            { id: 'g', label: '1,45 m', price: 1290 },
+          ],
+        },
+      });
+
+      const host = fixture.nativeElement as HTMLElement;
+      expect(host.querySelector('.pc__from')).not.toBeNull();
+      expect(host.querySelector('.pc__now')?.textContent).toContain('590');
+    });
   });
 });

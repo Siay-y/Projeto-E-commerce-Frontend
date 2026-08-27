@@ -1,0 +1,123 @@
+@if (product(); as product) {
+  <nav class="pd__crumb" aria-label="Trilha de navegação">
+    <ol>
+      <li><a routerLink="/">Início</a></li>
+      <li>
+        <a [routerLink]="['/animes', product.anime.slug]">{{ product.anime.name }}</a>
+      </li>
+      <li aria-current="page">{{ product.title }}</li>
+    </ol>
+  </nav>
+
+  <div class="pd">
+    <div class="pd__media">
+      <div class="pd__frame">
+        @if (product.image; as image) {
+          <img class="pd__img" [src]="image" [attr.alt]="product.title" fetchpriority="high" />
+        } @else {
+          <span class="pd__mark" aria-hidden="true">
+            <app-icon-d20 variant="solid" [size]="132" label="" />
+          </span>
+        }
+
+        <app-product-flags class="pd__flags" size="md" [flags]="flags()" />
+      </div>
+    </div>
+
+    <div class="pd__info">
+      <p class="pd__anime">{{ product.anime.name }}</p>
+
+      <h1 class="pd__title">{{ product.title }}</h1>
+
+      <div class="pd__meta">
+        @if (department(); as department) {
+          <a class="pd__tag" [routerLink]="'/' + department.slug">{{ department.label }}</a>
+        }
+
+        @if (product.rating; as rating) {
+          <p class="pd__rating">
+            <svg class="pd__star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"
+              />
+            </svg>
+            <span aria-hidden="true">{{ score() }}</span>
+            <span class="pd__votes" aria-hidden="true">({{ rating.count }})</span>
+            <span class="sr-only">Nota {{ score() }} de 5, {{ rating.count }} avaliações</span>
+          </p>
+        }
+      </div>
+
+      @if (product.summary; as summary) {
+        <p class="pd__lede">{{ summary }}</p>
+      }
+
+      <app-product-buy class="pd__buy" [product]="product" />
+    </div>
+  </div>
+
+  @if (product.details?.length || product.specs?.length) {
+    <section class="pd__more" aria-label="Detalhes do produto">
+      @if (product.details?.length) {
+        <div class="pd__panel">
+          <h2 class="pd__h2">Sobre a peça</h2>
+          <ul class="pd__bullets">
+            @for (item of product.details; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        </div>
+      }
+
+      @if (product.specs?.length) {
+        <div class="pd__panel">
+          <h2 class="pd__h2">Ficha técnica</h2>
+          <dl class="pd__specs">
+            @for (spec of product.specs; track spec.label) {
+              <div class="pd__spec">
+                <dt>{{ spec.label }}</dt>
+                <dd>{{ spec.value }}</dd>
+              </div>
+            }
+          </dl>
+        </div>
+      }
+    </section>
+  }
+
+  @if (fromAnime().length > 0) {
+    <app-product-shelf
+      class="pd__shelf"
+      kicker="Do mesmo universo"
+      [heading]="'Mais de ' + product.anime.name"
+      [seeAll]="'/animes/' + product.anime.slug"
+      [products]="fromAnime()"
+      (add)="addRelated($event)"
+    />
+  }
+
+  @if (department(); as department) {
+    @if (fromDepartment().length > 0) {
+      <app-product-shelf
+        class="pd__shelf"
+        kicker="De outros universos"
+        [heading]="'Também em ' + department.label"
+        [seeAll]="'/' + department.slug"
+        [products]="fromDepartment()"
+        (add)="addRelated($event)"
+      />
+    }
+  }
+} @else {
+  <section class="pd__gone">
+    <span class="pd__gone-mark" aria-hidden="true">
+      <app-icon-d20 variant="solid" [size]="88" label="" />
+    </span>
+    <h1 class="pd__gone-title">Esse produto não existe mais</h1>
+    <p class="pd__gone-text">
+      O endereço pode ter mudado, ou a peça saiu de linha. Dá para procurar pelo
+      anime dela.
+    </p>
+    <a class="pd__gone-link" routerLink="/animes">Ver todos os animes</a>
+  </section>
+}

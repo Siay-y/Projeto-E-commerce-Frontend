@@ -1,20 +1,39 @@
 import { Injectable, computed, signal } from '@angular/core';
 
+import { Product, ProductOption, priceOf } from '../catalog/product';
 import { formatBRL } from '../format/money';
 
 export interface CartLine {
+  // Camisa P e camisa M sao linhas distintas, entao a chave e o par
+  // produto + opcao, e nao o id do produto.
   readonly id: string;
+  readonly productId: string;
+  readonly slug: string;
   readonly title: string;
+  readonly variant?: string;
   readonly unitPrice: number;
   readonly quantity: number;
 }
 
-const FREE_SHIPPING_FROM = 199;
+export function lineFor(
+  product: Product,
+  option?: ProductOption,
+): Omit<CartLine, 'quantity'> {
+  return {
+    id: option ? `${product.id}:${option.id}` : product.id,
+    productId: product.id,
+    slug: product.slug,
+    title: product.title,
+    variant: option?.label,
+    unitPrice: priceOf(product, option),
+  };
+}
+
+export const FREE_SHIPPING_FROM = 199;
 
 @Injectable({ providedIn: 'root' })
 export class CartStore {
-  private readonly lines = signal<readonly CartLine[]>([
-  ]);
+  private readonly lines = signal<readonly CartLine[]>([]);
 
   readonly items = this.lines.asReadonly();
 
@@ -47,6 +66,10 @@ export class CartStore {
   });
 
   readonly hasFreeShipping = computed(() => this.subtotal() >= FREE_SHIPPING_FROM);
+
+  quantityOf(id: string): number {
+    return this.lines().find((line) => line.id === id)?.quantity ?? 0;
+  }
 
   add(item: Omit<CartLine, 'quantity'>, quantity = 1): void {
     if (quantity <= 0) return;
