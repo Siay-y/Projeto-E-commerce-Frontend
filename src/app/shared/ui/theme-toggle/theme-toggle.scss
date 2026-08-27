@@ -1,0 +1,60 @@
+@use 'sass:math';
+
+$spin: -150deg;
+$moon-axis: -45deg;
+$bite-distance: 7.1;
+$bite-angle: $moon-axis - $spin;
+
+:host {
+  display: inline-flex;
+}
+
+.tt__bite {
+  cx: 26px;
+  cy: 6px;
+  r: 8px;
+  transition:
+    cx var(--dur-slow) var(--ease-out),
+    cy var(--dur-slow) var(--ease-out);
+}
+
+.tt__orb {
+  r: 5.4px;
+  transition: r var(--dur-slow) var(--ease-spring);
+}
+
+.tt,
+.tt__rays {
+  transform-box: view-box;
+  transform-origin: center;
+}
+
+.tt {
+  transition: transform 700ms var(--ease-spring);
+}
+
+.tt__rays {
+  transition:
+    transform var(--dur-slow) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
+}
+
+.is-dark {
+  .tt {
+    transform: rotate($spin);
+  }
+
+  .tt__bite {
+    cx: (12 + $bite-distance * math.cos($bite-angle)) * 1px;
+    cy: (12 + $bite-distance * math.sin($bite-angle)) * 1px;
+  }
+
+  .tt__orb {
+    r: 8.2px;
+  }
+
+  .tt__rays {
+    opacity: 0;
+    transform: scale(0.35) rotate(-70deg);
+  }
+}

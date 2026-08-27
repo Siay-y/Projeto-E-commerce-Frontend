@@ -77,6 +77,19 @@
   }
 }
 
+:host([data-variant='accent']) {
+  background: var(--grad-accent);
+  color: var(--accent-ink);
+
+  .btn__wipe {
+    background: var(--surface);
+  }
+
+  &:hover:not(:disabled) {
+    color: var(--accent);
+  }
+}
+
 :host([data-variant='secondary']) {
   background: transparent;
   color: var(--ink);

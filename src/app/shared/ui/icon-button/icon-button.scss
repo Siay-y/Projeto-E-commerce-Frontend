@@ -1,0 +1,68 @@
+:host {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ink-muted);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+
+  transition:
+    color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+}
+
+:host([data-size='sm']) {
+  width: 2rem;
+  height: 2rem;
+}
+
+.ib__veil {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--veil-hover);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  pointer-events: none;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.ib__slot {
+  display: inline-flex;
+  line-height: 0;
+}
+
+:host(:hover:not(:disabled)),
+:host(:focus-visible) {
+  color: var(--ink);
+  border-color: var(--border);
+
+  .ib__veil {
+    transform: scaleY(1);
+  }
+}
+
+:host(:active:not(:disabled)) .ib__veil {
+  background: var(--veil-press);
+}
+
+:host(:focus-visible) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+:host(:disabled) {
+  cursor: not-allowed;
+  opacity: 0.4;
+}

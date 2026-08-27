@@ -1,0 +1,77 @@
+<header class="hd">
+  <div class="hd__bar">
+    <app-logo class="hd__logo" [compact]="compact()" />
+
+    <app-site-search class="hd__search" />
+
+    <div class="hd__actions">
+      <app-theme-toggle class="hd__theme" />
+
+      <a class="hd__action hd__action--optional" routerLink="/conta">
+        <app-icon name="user" [size]="19" />
+        <span class="hd__stack">
+          <span class="hd__stack-top">Olá, visitante</span>
+          <span class="hd__stack-main">Entrar</span>
+        </span>
+      </a>
+
+      <button class="hd__action" type="button" [attr.aria-label]="cart.label()">
+        <span class="hd__bag">
+          <app-icon name="bag" [size]="19" />
+          @if (cart.count() > 0) {
+            <span class="hd__badge" aria-hidden="true">{{ cart.count() }}</span>
+          }
+        </span>
+        <span class="hd__stack hd__stack--optional">
+          <span class="hd__stack-top">Carrinho</span>
+          <span class="hd__stack-main hd__price">{{ cart.subtotalLabel() }}</span>
+        </span>
+      </button>
+
+      <button
+        appIconButton
+        type="button"
+        class="hd__burger"
+        aria-controls="hd-sheet"
+        [attr.aria-expanded]="menuOpen()"
+        [attr.aria-label]="menuLabel()"
+        (click)="menuOpen.set(!menuOpen())"
+      >
+        <app-icon [name]="menuOpen() ? 'close' : 'menu'" />
+      </button>
+    </div>
+  </div>
+
+  <!-- A prateleira e de largura total; a nav continua limitada ao conteudo. -->
+  <div class="hd__shelf">
+    <nav class="hd__nav" #navRoot aria-label="Departamentos" (pointerleave)="settle()">
+      <ul class="hd__links">
+        @for (link of links; track link.path; let i = $index) {
+          <li>
+            <a
+              #navLink
+              class="hd__link"
+              [routerLink]="link.path"
+              [attr.data-active]="link.path === activePath() || null"
+              [attr.aria-current]="link.path === activePath() ? 'page' : null"
+              (pointerenter)="highlight(i)"
+              (focus)="highlight(i)"
+            >
+              {{ link.label }}
+            </a>
+          </li>
+        }
+      </ul>
+
+      <span
+        class="hd__rule"
+        aria-hidden="true"
+        [class.is-on]="rule().on"
+        [style.width.px]="rule().w"
+        [style.transform]="'translate3d(' + rule().x + 'px, 0, 0)'"
+      ></span>
+    </nav>
+  </div>
+
+  <app-nav-sheet id="hd-sheet" [links]="links" [open]="menuOpen()" />
+</header>

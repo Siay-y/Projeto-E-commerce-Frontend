@@ -1,0 +1,78 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.ss {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  height: 2.75rem;
+  padding-inline: var(--sp-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+
+.ss__glass {
+  flex: none;
+  color: var(--ink-subtle);
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.ss__field {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: var(--fs-sm);
+}
+
+.ss__field::placeholder {
+  color: var(--ink-subtle);
+}
+
+.ss__field::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.ss__key {
+  display: none;
+  flex: none;
+  min-width: 1.35rem;
+  padding: 2px 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  color: var(--ink-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  text-align: center;
+}
+
+.ss:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.ss:focus-within .ss__glass {
+  color: var(--accent);
+}
+
+.ss:focus-within .ss__key {
+  opacity: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ss:hover {
+    border-color: var(--ink-subtle);
+  }
+
+  .ss__key {
+    display: block;
+  }
+}

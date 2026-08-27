@@ -1,0 +1,123 @@
+// -----------------------------------------------------------------------------
+// Banda de topo: superficie solida e texturizada que separa o cabecalho da
+// pagina do campo (canvas) onde a grade de produtos flutua.
+// -----------------------------------------------------------------------------
+// O brilho do acento entra como camada de cima; a malha, por baixo dele.
+// `--pattern-grid` sao duas imagens, dai as tres entradas em background-size.
+.ph__band {
+  border-bottom: 1px solid var(--border);
+  background-color: var(--surface);
+  background-image: var(--grad-glow), var(--pattern-grid);
+  background-size:
+    auto,
+    var(--texture-size) var(--texture-size),
+    var(--texture-size) var(--texture-size);
+}
+
+.ph {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--sp-6) var(--sp-4) var(--sp-9);
+}
+
+.ph__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--sp-7) var(--sp-4);
+}
+
+.ph__kicker {
+  color: var(--accent);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.ph__title {
+  margin-top: var(--sp-2);
+  font-size: clamp(1.75rem, 6vw, 2.25rem);
+}
+
+.ph__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.ph__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-4);
+}
+
+.card {
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card__art {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--r-sm);
+  background-color: var(--surface-sunken);
+  background-image: var(--pattern-hatch);
+}
+
+.card__line {
+  height: 0.6rem;
+  margin-top: var(--sp-3);
+  border-radius: 3px;
+  background: var(--surface-sunken);
+}
+
+.card__line--title {
+  width: 82%;
+}
+
+.card__line--sub {
+  width: 54%;
+  margin-top: var(--sp-2);
+}
+
+.card__price {
+  width: 5.5rem;
+  height: 0.9rem;
+  margin-top: var(--sp-4);
+  border-radius: 3px;
+  background: var(--accent-soft);
+}
+
+@media (min-width: 40rem) {
+  .ph__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 60rem) {
+  .ph,
+  .ph__head {
+    padding-inline: var(--sp-5);
+  }
+
+  .ph__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { IconD20 } from '../icon-d20/icon-d20';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+export type ButtonVariant = 'primary' | 'accent' | 'secondary' | 'ghost';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 /**

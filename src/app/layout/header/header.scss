@@ -1,0 +1,264 @@
+:host {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  display: block;
+  border-bottom: 1px solid var(--border);
+  background: var(--veil-glass);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  transition: box-shadow var(--dur-slow) var(--ease-out);
+}
+
+// Fio da marca na borda de cima -- nao na de baixo, onde o .hd__rule do
+// departamento ativo (tambem 2px e tambem no acento) o engoliria. Grudado o
+// header, ele vira a primeira linha da viewport.
+:host::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: var(--grad-hairline);
+  pointer-events: none;
+}
+
+:host(.is-lifted) {
+  box-shadow: var(--shadow-md);
+}
+
+.hd__bar,
+.hd__nav {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding-inline: max(var(--sp-4), env(safe-area-inset-left));
+}
+
+.hd__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2) var(--sp-3);
+  padding-block: 0.75rem;
+  transition: padding-block var(--dur-slow) var(--ease-out);
+}
+
+:host(.is-compact) .hd__bar {
+  padding-block: 0.5rem;
+}
+
+.hd__logo {
+  order: 1;
+  min-width: 0;
+}
+
+.hd__actions {
+  order: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  margin-left: auto;
+}
+
+.hd__search {
+  order: 3;
+  flex: 1 0 100%;
+}
+
+.hd__action {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  height: 2.5rem;
+  padding-inline: var(--sp-2);
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color var(--dur-base) var(--ease-out);
+}
+
+.hd__action::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--veil-hover);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.hd__action:hover {
+  border-color: var(--border);
+}
+
+.hd__action:hover::before {
+  transform: scaleY(1);
+}
+
+.hd__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.18;
+}
+
+.hd__stack-top {
+  color: var(--ink-muted);
+  font-size: 0.6875rem;
+}
+
+.hd__stack-main {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.hd__price {
+  font-variant-numeric: tabular-nums;
+}
+
+.hd__bag {
+  position: relative;
+  display: inline-flex;
+}
+
+.hd__badge {
+  position: absolute;
+  top: -7px;
+  right: -8px;
+  display: grid;
+  place-items: center;
+  min-width: 1.05rem;
+  height: 1.05rem;
+  padding-inline: 3px;
+  border-radius: var(--r-full);
+  background: var(--grad-accent);
+  color: var(--accent-ink);
+  font-size: 0.625rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  animation: badge-in 460ms var(--ease-spring);
+}
+
+@keyframes badge-in {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// A faixa de departamentos era so links soltos no ar. Rebaixada e separada por
+// um fio, ela vira uma prateleira -- e o header passa a ter duas alturas em vez
+// de uma mancha unica.
+.hd__shelf {
+  display: none;
+  border-top: 1px solid var(--border);
+  background: var(--veil-sunken);
+}
+
+.hd__nav {
+  position: relative;
+}
+
+.hd__links {
+  display: flex;
+  gap: var(--sp-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hd__link {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--sp-3);
+  color: var(--ink-muted);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.hd__link:hover,
+.hd__link[data-active] {
+  color: var(--ink);
+}
+
+.hd__rule {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 360ms var(--ease-out),
+    width 360ms var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
+}
+
+.hd__rule.is-on {
+  opacity: 1;
+}
+
+// -----------------------------------------------------------------------------
+// Escalonamento
+// -----------------------------------------------------------------------------
+.hd__action--optional,
+.hd__stack--optional {
+  display: none;
+}
+
+@media (min-width: 48rem) {
+  .hd__action--optional {
+    display: inline-flex;
+  }
+
+  .hd__stack--optional {
+    display: flex;
+  }
+
+  .hd__bag {
+    margin-right: var(--sp-2);
+  }
+}
+
+@media (min-width: 60rem) {
+  .hd__bar,
+  .hd__nav {
+    padding-inline: var(--sp-5);
+  }
+
+  .hd__bar {
+    flex-wrap: nowrap;
+    gap: var(--sp-6);
+  }
+
+  .hd__search {
+    order: 2;
+    flex: 1 1 auto;
+    max-width: 34rem;
+  }
+
+  .hd__actions {
+    order: 3;
+  }
+
+  .hd__shelf {
+    display: block;
+  }
+
+  .hd__burger {
+    display: none;
+  }
+}

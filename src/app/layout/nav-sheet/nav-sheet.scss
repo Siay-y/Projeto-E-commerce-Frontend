@@ -1,0 +1,107 @@
+:host {
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  display: grid;
+  grid-template-rows: 0fr;
+  background: var(--surface);
+  transition: grid-template-rows var(--dur-slow) var(--ease-out);
+}
+
+:host(.is-open) {
+  grid-template-rows: 1fr;
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+}
+
+.sheet__body {
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.sheet__list {
+  margin: 0;
+  padding: var(--sp-2) 0;
+  list-style: none;
+}
+
+.sheet__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4) var(--sp-5);
+  color: var(--ink-muted);
+  font-size: var(--fs-lg);
+  font-weight: 550;
+  letter-spacing: var(--tracking-tight);
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+
+.sheet__link:hover {
+  color: var(--ink);
+  background: var(--veil-hover);
+}
+
+.sheet__link.is-active {
+  color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+:host(.is-open) .sheet__link {
+  opacity: 1;
+  transform: none;
+}
+
+@for $i from 1 through 8 {
+  :host(.is-open) li:nth-child(#{$i}) .sheet__link {
+    transition-delay: #{50 + ($i - 1) * 50}ms;
+  }
+}
+
+.sheet__foot {
+  padding: var(--sp-4) var(--sp-5) max(var(--sp-5), env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out) 280ms;
+}
+
+:host(.is-open) .sheet__foot {
+  opacity: 1;
+}
+
+.sheet__account {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  height: 2.75rem;
+  padding-inline: var(--sp-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sheet__note {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+  color: var(--ink-muted);
+  font-size: var(--fs-xs);
+}
+
+@media (min-width: 60rem) {
+  :host {
+    display: none;
+  }
+}

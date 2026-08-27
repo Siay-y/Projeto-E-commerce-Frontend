@@ -1,0 +1,90 @@
+:host {
+  display: inline-flex;
+  line-height: 0;
+  transform-origin: center;
+}
+
+.d20-lid,
+.d20-sparks path {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.d20-stop-a {
+  stop-color: var(--d20-from);
+}
+
+.d20-stop-b {
+  stop-color: var(--d20-to);
+}
+
+:host(.is-excited) {
+  animation: d20-shake 620ms var(--ease-out);
+}
+
+:host(.is-excited) .d20-lid {
+  animation: d20-lid-pop 700ms var(--ease-spring);
+}
+
+:host(.is-excited) .d20-sparks path {
+  animation: d20-spark 560ms var(--ease-out) backwards;
+}
+
+:host(.is-excited) .d20-sparks path:nth-child(1) {
+  animation-delay: 90ms;
+}
+
+:host(.is-excited) .d20-sparks path:nth-child(2) {
+  animation-delay: 190ms;
+}
+
+@keyframes d20-shake {
+  0% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(-11deg);
+  }
+  30% {
+    transform: rotate(9deg);
+  }
+  45% {
+    transform: rotate(-6deg);
+  }
+  60% {
+    transform: rotate(4deg);
+  }
+  78% {
+    transform: rotate(-2deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes d20-lid-pop {
+  0% {
+    transform: translateY(0);
+  }
+  38% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes d20-spark {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-45deg);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.35) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}

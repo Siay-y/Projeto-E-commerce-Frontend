@@ -6,6 +6,7 @@
   --n-0: #ffffff;
   --n-50: #fafafa;
   --n-100: #f4f4f5;
+  --n-150: #eceef1;
   --n-200: #e8e8ea;
   --n-300: #d2d2d6;
   --n-400: #a0a0a8;
@@ -16,11 +17,31 @@
   --n-900: #18181b;
   --n-950: #0b0b0d;
 
+  --a-50: #fff1f2;
+  --a-100: #ffe4e6;
+  --a-200: #fecdd3;
+  --a-300: #fda4af;
+  --a-400: #f2717f;
+  --a-500: #d92d43;
+  --a-600: #be123c;
+  --a-700: #9f1239;
+  --a-800: #7a0f2c;
+  --a-900: #4c0519;
+
+  --d-canvas: #0f1014;
+  --d-sunken: #131419;
+  --d-base: #191a1f;
+  --d-raised: #212229;
+  --d-line: #2d2f37;
+  --d-line-strong: #3e4049;
+  --d-ink: #e8e9ee;
+
   // ---------------------------------------------------------------------------
   // Semanticos — tema claro
   // ---------------------------------------------------------------------------
+  --canvas: var(--n-150);
   --surface: var(--n-0);
-  --surface-sunken: var(--n-50);
+  --surface-sunken: var(--n-100);
   --surface-raised: var(--n-0);
   --surface-inverse: var(--n-950);
 
@@ -33,8 +54,53 @@
   --border-strong: var(--n-300);
   --border-inverse: var(--n-800);
 
-  --focus-ring: var(--n-950);
   --overlay: rgb(11 11 13 / 0.44);
+
+  --accent: var(--a-500);
+  --accent-hover: var(--a-600);
+  --accent-ink: var(--n-0);
+  --accent-soft: color-mix(in oklab, var(--accent) 11%, transparent);
+  --accent-line: color-mix(in oklab, var(--accent) 34%, transparent);
+
+  --d20-from: var(--a-400);
+  --d20-to: var(--a-600);
+
+  --grad-accent: linear-gradient(135deg, var(--a-500), var(--a-700));
+  --grad-hairline: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-line) 16%,
+    var(--accent) 50%,
+    var(--accent-line) 84%,
+    transparent
+  );
+  --grad-glow: radial-gradient(
+    62% 62% at 50% 0%,
+    color-mix(in oklab, var(--accent) 20%, transparent),
+    transparent 72%
+  );
+
+  --focus-ring: var(--accent);
+
+  --veil-hover: color-mix(in oklab, var(--ink) 7%, transparent);
+  --veil-press: color-mix(in oklab, var(--ink) 13%, transparent);
+  --veil-glass: color-mix(in oklab, var(--surface) 72%, transparent);
+
+  --veil-sunken: color-mix(in oklab, var(--n-950) 5%, transparent);
+
+  --texture-ink: color-mix(in oklab, var(--n-950) 9%, transparent);
+  --texture-ink-soft: color-mix(in oklab, var(--n-950) 5%, transparent);
+  --texture-size: 22px;
+
+  --pattern-dots: radial-gradient(var(--texture-ink) 1px, transparent 1.5px);
+  --pattern-grid:
+    linear-gradient(var(--texture-ink-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--texture-ink-soft) 1px, transparent 1px);
+  --pattern-hatch: repeating-linear-gradient(
+    -45deg,
+    var(--texture-ink-soft) 0 1px,
+    transparent 1px 7px
+  );
 
   --shadow-sm: 0 1px 2px rgb(11 11 13 / 0.06);
   --shadow-md: 0 2px 4px rgb(11 11 13 / 0.05), 0 8px 16px rgb(11 11 13 / 0.06);
@@ -99,29 +165,48 @@
 }
 
 // =============================================================================
-// Tema escuro. Os primitivos nao mudam — apenas o mapeamento semantico.
+// Tema escuro.
 // =============================================================================
 @mixin dark-theme {
-  --surface: var(--n-950);
-  --surface-sunken: #000000;
-  --surface-raised: var(--n-900);
+  --canvas: var(--d-canvas);
+  --surface: var(--d-base);
+  --surface-sunken: var(--d-sunken);
+  --surface-raised: var(--d-raised);
   --surface-inverse: var(--n-0);
 
-  --ink: var(--n-50);
-  --ink-muted: var(--n-400);
-  --ink-subtle: var(--n-500);
+  --ink: var(--d-ink);
+  --ink-muted: #a3a5b0;
+  --ink-subtle: #787a86;
   --ink-inverse: var(--n-950);
 
-  --border: var(--n-800);
-  --border-strong: var(--n-700);
+  --border: var(--d-line);
+  --border-strong: var(--d-line-strong);
   --border-inverse: var(--n-200);
 
-  --focus-ring: var(--n-0);
-  --overlay: rgb(0 0 0 / 0.66);
+  --overlay: rgb(9 10 13 / 0.7);
 
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.5);
-  --shadow-md: 0 2px 4px rgb(0 0 0 / 0.4), 0 8px 16px rgb(0 0 0 / 0.5);
-  --shadow-lg: 0 4px 8px rgb(0 0 0 / 0.4), 0 16px 40px rgb(0 0 0 / 0.6);
+  --texture-ink: color-mix(in oklab, var(--n-0) 9%, transparent);
+  --texture-ink-soft: color-mix(in oklab, var(--n-0) 5%, transparent);
+
+  --veil-sunken: color-mix(in oklab, var(--n-950) 32%, transparent);
+
+  --accent: var(--a-400);
+  --accent-hover: var(--a-300);
+  --accent-ink: var(--n-950);
+  --accent-soft: color-mix(in oklab, var(--accent) 16%, transparent);
+  --accent-line: color-mix(in oklab, var(--accent) 40%, transparent);
+
+  --d20-from: var(--a-300);
+  --d20-to: var(--a-500);
+
+  // No escuro o texto sobre o acento e escuro, entao o degrade sobe na escala.
+  --grad-accent: linear-gradient(135deg, var(--a-300), var(--a-400));
+
+  --focus-ring: var(--accent);
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.45);
+  --shadow-md: 0 2px 4px rgb(0 0 0 / 0.35), 0 8px 18px rgb(0 0 0 / 0.45);
+  --shadow-lg: 0 4px 10px rgb(0 0 0 / 0.4), 0 18px 44px rgb(0 0 0 / 0.55);
 }
 
 @media (prefers-color-scheme: dark) {

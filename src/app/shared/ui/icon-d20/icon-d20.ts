@@ -2,39 +2,46 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 
 export type D20Variant = 'unboxing' | 'solid' | 'express';
 
+export type D20Tone = 'current' | 'brand';
+
+const BRAND_GRADIENT = 'ac-d20-grad';
+
 /**
  * Icone da marca: o D20 de Entrega.
- *
- * A silhueta e a projecao real de um icosaedro pelo seu eixo de simetria de
- * ordem 3 (10 das 20 faces visiveis), por isso a razao entre o hexagono
- * externo e o triangulo interno e exatamente phi (1.618).
- *
- * Os vertices sao arredondados com curvas quadraticas, e os extremos das
- * arestas radiais foram recalculados para cair sobre essas curvas -- sem isso
- * abrem microfrestas nos encontros quando o traco engrossa.
  *
  * Herda a cor via `currentColor` e o tamanho via o input `size`.
  */
 @Component({
   selector: 'app-icon-d20',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { style: 'display: inline-flex; line-height: 0' },
+  styleUrl: './icon-d20.scss',
   template: `
     <svg
       [attr.width]="size()"
       [attr.height]="size()"
       viewBox="0 0 100 100"
       fill="none"
-      stroke="currentColor"
+      [attr.stroke]="paint()"
       [attr.stroke-width]="strokeWidth()"
       stroke-linecap="round"
       stroke-linejoin="round"
-      role="img"
-      [attr.aria-label]="label()"
+      [attr.role]="label() ? 'img' : null"
+      [attr.aria-label]="label() || null"
+      [attr.aria-hidden]="label() ? null : 'true'"
     >
+      @if (tone() === 'brand') {
+        <defs>
+          <linearGradient [attr.id]="gradientId" x1="0" y1="0" x2="1" y2="1">
+            <stop class="d20-stop-a" offset="0" />
+            <stop class="d20-stop-b" offset="1" />
+          </linearGradient>
+        </defs>
+      }
+
       @switch (variant()) {
         @case ('unboxing') {
           <path
+            class="d20-lid"
             d="M44.76 11.46 L39.69 15.95 Q34.45 20.59 41.45 20.59 L58.55 20.59
                Q65.55 20.59 60.31 15.95 L55.24 11.46 Q50 6.82 44.76 11.46 Z"
           />
@@ -51,7 +58,7 @@ export type D20Variant = 'unboxing' | 'solid' | 'express';
           <path d="M34.58 70.9 L22.72 46.25 M34.58 70.9 L22.72 77.75 M34.58 70.9 L50 93.5" />
           <path d="M65.42 70.9 L77.28 46.25 M65.42 70.9 L77.28 77.75 M65.42 70.9 L50 93.5" />
           @if (sparkles()) {
-            <g opacity=".7" [attr.stroke-width]="strokeWidth() * 0.8">
+            <g class="d20-sparks" opacity=".7" [attr.stroke-width]="strokeWidth() * 0.8">
               <path d="M26 27.8 V34.2 M22.8 31 H29.2" />
               <path d="M74.5 27.6 V32.4 M72.1 30 H76.9" />
             </g>
@@ -61,8 +68,8 @@ export type D20Variant = 'unboxing' | 'solid' | 'express';
           <path
             d="M46.25 30.54 L31.27 56.49 Q27.52 62.98 35.02 62.98 L64.98 62.98
                Q72.48 62.98 68.73 56.49 L53.75 30.54 Q50 24.04 46.25 30.54 Z"
-            fill="currentColor"
-            fill-opacity=".12"
+            [attr.fill]="paint()"
+            fill-opacity=".16"
           />
           <path
             d="M43.51 11.75 Q50 8 56.49 11.75 L79.88 25.25 Q86.37 29 86.37 36.5 L86.37 63.5
@@ -82,7 +89,7 @@ export type D20Variant = 'unboxing' | 'solid' | 'express';
           <path
             d="M54.75 33.38 L41.98 55.5 Q38.73 61.13 45.23 61.13 L70.77 61.13
                Q77.27 61.13 74.02 55.5 L61.25 33.38 Q58 27.75 54.75 33.38 Z"
-            fill="currentColor"
+            [attr.fill]="paint()"
             fill-opacity=".12"
           />
           <path
@@ -99,7 +106,8 @@ export type D20Variant = 'unboxing' | 'solid' | 'express';
   `,
 })
 export class IconD20 {
-  readonly variant = input<D20Variant>('unboxing');
+  readonly variant = input<D20Variant>('solid');
+  readonly tone = input<D20Tone>('current');
   readonly size = input(40);
   readonly label = input('D20 de Entrega');
   readonly sparkles = input(true);
@@ -108,5 +116,12 @@ export class IconD20 {
 
   readonly strokeWidth = computed(
     () => this.weight() ?? Math.min(8.5, Math.max(5, 200 / this.size())),
+  );
+
+  /** Id fixo: presume-se uma unica instancia `brand` por pagina (a marca). */
+  protected readonly gradientId = BRAND_GRADIENT;
+
+  protected readonly paint = computed(() =>
+    this.tone() === 'brand' ? `url(#${BRAND_GRADIENT})` : 'currentColor',
   );
 }

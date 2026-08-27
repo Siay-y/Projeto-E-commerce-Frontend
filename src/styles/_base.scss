@@ -15,11 +15,14 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  background-color: var(--canvas);
 }
 
 body {
   min-height: 100dvh;
-  background: var(--surface);
+  background-color: var(--canvas);
+  background-image: var(--pattern-dots);
+  background-size: var(--texture-size) var(--texture-size);
   color: var(--ink);
   font-family: var(--font-sans);
   font-size: var(--fs-md);
