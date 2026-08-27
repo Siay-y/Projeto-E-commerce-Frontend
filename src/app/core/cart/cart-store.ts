@@ -1,5 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
 
+import { formatBRL } from '../format/money';
+
 export interface CartLine {
   readonly id: string;
   readonly title: string;
@@ -8,8 +10,6 @@ export interface CartLine {
 }
 
 const FREE_SHIPPING_FROM = 199;
-
-const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
 @Injectable({ providedIn: 'root' })
 export class CartStore {
@@ -28,7 +28,7 @@ export class CartStore {
     this.lines().reduce((total, line) => total + line.unitPrice * line.quantity, 0),
   );
 
-  readonly subtotalLabel = computed(() => BRL.format(this.subtotal()));
+  readonly subtotalLabel = computed(() => formatBRL(this.subtotal()));
 
   readonly label = computed(() => {
     const count = this.count();
@@ -40,9 +40,22 @@ export class CartStore {
   readonly shippingHint = computed(() => {
     const missing = FREE_SHIPPING_FROM - this.subtotal();
     return missing > 0
-      ? `Faltam ${BRL.format(missing)} para o frete grátis`
+      ? `Faltam ${formatBRL(missing)} para o frete grátis`
       : 'Frete grátis liberado neste pedido';
   });
 
   readonly hasFreeShipping = computed(() => this.subtotal() >= FREE_SHIPPING_FROM);
+
+  add(item: Omit<CartLine, 'quantity'>, quantity = 1): void {
+    if (quantity <= 0) return;
+
+    this.lines.update((lines) => {
+      const known = lines.some((line) => line.id === item.id);
+      if (!known) return [...lines, { ...item, quantity }];
+
+      return lines.map((line) =>
+        line.id === item.id ? { ...line, quantity: line.quantity + quantity } : line,
+      );
+    });
+  }
 }

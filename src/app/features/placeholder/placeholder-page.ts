@@ -1,18 +1,24 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 
+import { CatalogStore } from '../../core/catalog/catalog-store';
+import { CartStore } from '../../core/cart/cart-store';
+import { CATEGORIES } from '../../core/catalog/category';
+import { Product } from '../../core/catalog/product';
 import { Button } from '../../shared/ui/button/button';
+import { ProductCard } from '../../shared/ui/product-card/product-card';
+import { ProductShelf } from '../../shared/ui/product-shelf/product-shelf';
 
 @Component({
   selector: 'app-placeholder-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Button],
+  imports: [Button, ProductCard, ProductShelf],
   styleUrl: './placeholder-page.scss',
   template: `
     <div class="ph__band">
       <header class="ph__head">
         <div>
           <p class="ph__kicker">Módulo em construção</p>
-          <h1 class="ph__title">{{ heading() }}</h1>
+          <h1 class="ph__title">{{ title() }}</h1>
         </div>
 
         <div class="ph__cta">
@@ -23,21 +29,77 @@ import { Button } from '../../shared/ui/button/button';
     </div>
 
     <section class="ph">
-      <div class="ph__grid">
-        @for (card of cards; track card) {
-          <article class="card" aria-hidden="true">
-            <div class="card__art"></div>
-            <div class="card__line card__line--title"></div>
-            <div class="card__line card__line--sub"></div>
-            <div class="card__price"></div>
-          </article>
-        }
-      </div>
+      <!-- A vitrine so faz sentido na home: num recorte ela repetiria, logo
+           acima da grade, as mesmas pecas que a grade ja mostra. -->
+      @if (!sliced()) {
+        <app-product-shelf
+          class="ph__shelf"
+          kicker="Chegou agora"
+          heading="Em alta na guilda"
+          seeAll="/animes"
+          [products]="products()"
+          (add)="addToCart($event)"
+        />
+      }
+
+      <h2 class="ph__section">{{ sectionTitle() }}</h2>
+
+      @if (products().length > 0) {
+        <div class="ph__grid">
+          @for (product of products(); track product.id) {
+            <app-product-card [product]="product" (add)="addToCart($event)" />
+          }
+        </div>
+      } @else {
+        <p class="ph__empty">Nada por aqui ainda.</p>
+      }
     </section>
   `,
 })
 export class PlaceholderPage {
   readonly heading = input.required<string>();
 
-  protected readonly cards = Array.from({ length: 12 }, (_, index) => index);
+
+  // Chegam `undefined` nas rotas que nao os declaram: o binder do router zera o
+  // que a rota atual nao tem, em vez de deixar o valor padrao. Testar por
+  // `!== ''` faz toda rota parecer recortada.
+  readonly anime = input<string | undefined>(undefined);
+
+  readonly category = input<string | undefined>(undefined);
+
+  protected readonly catalog = inject(CatalogStore);
+  private readonly cart = inject(CartStore);
+
+  private readonly department = computed(() =>
+    CATEGORIES.find((entry) => entry.slug === this.category()),
+  );
+
+  protected readonly sliced = computed(() =>
+    Boolean(this.anime() || this.department()),
+  );
+
+  protected readonly products = computed<readonly Product[]>(() => {
+    const department = this.department();
+    if (department) return this.catalog.byCategory(department.slug);
+
+    const anime = this.anime();
+    if (anime) return this.catalog.byAnime(anime);
+
+    return this.catalog.all();
+  });
+
+  protected readonly title = computed(() => {
+    const anime = this.anime();
+    if (!anime) return this.heading();
+
+    return this.catalog.animeBySlug(anime)?.name ?? this.heading();
+  });
+
+  protected readonly sectionTitle = computed(() =>
+    this.sliced() ? `${this.products().length} produtos` : 'Todos os produtos',
+  );
+
+  protected addToCart(product: Product): void {
+    this.cart.add({ id: product.id, title: product.title, unitPrice: product.price });
+  }
 }

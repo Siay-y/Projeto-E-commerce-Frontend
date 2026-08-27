@@ -24,8 +24,8 @@ describe('Header', () => {
   }
 
   it('marca como ativo o link da rota para onde navegou', async () => {
-    const host = await renderAt('/universos');
-    expect(activeHref(host)).toBe('/universos');
+    const host = await renderAt('/animes');
+    expect(activeHref(host)).toBe('/animes');
   });
 
   it('move a marcação ao navegar de novo', async () => {
@@ -33,30 +33,38 @@ describe('Header', () => {
     const router = TestBed.inject(Router);
     const host = fixture.nativeElement as HTMLElement;
 
-    await router.navigate(['/catalogo']);
+    await router.navigate(['/camisas']);
     await fixture.whenStable();
-    expect(activeHref(host)).toBe('/catalogo');
+    expect(activeHref(host)).toBe('/camisas');
 
-    await router.navigate(['/loot-box']);
+    await router.navigate(['/cosplay']);
     await fixture.whenStable();
-    expect(activeHref(host)).toBe('/loot-box');
+    expect(activeHref(host)).toBe('/cosplay');
   });
 
   it('marca exatamente um link por vez', async () => {
-    const host = await renderAt('/sobre');
+    const host = await renderAt('/acessorios');
     expect(host.querySelectorAll('.hd__link[data-active]')).toHaveLength(1);
   });
 
+  it('mantém Animes marcado dentro da área de um anime', async () => {
+    const host = await renderAt('/animes/frieren');
+    expect(activeHref(host)).toBe('/animes');
+  });
+
   it('não marca nenhum departamento em rotas de fora da navegação', async () => {
-    const host = await renderAt('/conta');
-    expect(activeHref(host)).toBeNull();
+    expect(activeHref(await renderAt('/conta'))).toBeNull();
+    expect(activeHref(await renderAt('/loot-box'))).toBeNull();
+    expect(activeHref(await renderAt('/sobre'))).toBeNull();
   });
 
   it('ignora a query string ao casar a rota ativa', async () => {
     const fixture = TestBed.createComponent(Header);
-    await TestBed.inject(Router).navigate(['/catalogo'], { queryParams: { q: 'd20' } });
+    await TestBed.inject(Router).navigate(['/animes/frieren'], {
+      queryParams: { tipo: 'camisas' },
+    });
     await fixture.whenStable();
 
-    expect(activeHref(fixture.nativeElement as HTMLElement)).toBe('/catalogo');
+    expect(activeHref(fixture.nativeElement as HTMLElement)).toBe('/animes');
   });
 });

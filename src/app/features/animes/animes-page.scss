@@ -1,0 +1,145 @@
+// -----------------------------------------------------------------------------
+// Hub de animes.
+// -----------------------------------------------------------------------------
+.an__band {
+  border-bottom: 1px solid var(--border);
+  background-color: var(--surface);
+  background-image: var(--grad-glow), var(--pattern-grid);
+  background-size:
+    auto,
+    var(--texture-size) var(--texture-size),
+    var(--texture-size) var(--texture-size);
+}
+
+.an__head {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--sp-7) var(--sp-4);
+}
+
+.an__kicker {
+  color: var(--accent);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.an__title {
+  margin-top: var(--sp-2);
+  font-size: clamp(1.75rem, 6vw, 2.25rem);
+}
+
+.an__lede {
+  max-width: 46ch;
+  margin-top: var(--sp-3);
+  color: var(--ink-muted);
+}
+
+.an {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--sp-6) var(--sp-4) var(--sp-9);
+}
+
+// -----------------------------------------------------------------------------
+// Filtro
+// -----------------------------------------------------------------------------
+.an__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+
+.an__filter {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex: 1 1 16rem;
+  max-width: 22rem;
+
+  height: 2.75rem;
+  padding-inline: var(--sp-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-raised);
+  color: var(--ink-muted);
+
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+
+.an__filter:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.an__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  outline: none;
+}
+
+.an__input::placeholder {
+  color: var(--ink-subtle);
+}
+
+.an__input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.an__tally {
+  color: var(--ink-muted);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+// -----------------------------------------------------------------------------
+// Grade
+// -----------------------------------------------------------------------------
+.an__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+
+  grid-auto-rows: 1fr;
+  gap: var(--sp-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// Sem isto o <li> nao repassa a altura da celula ao card, e o `grid-auto-rows`
+// acima nao chega a lugar nenhum.
+.an__grid > li {
+  display: grid;
+}
+
+.an__empty {
+  padding: var(--sp-7) 0;
+  color: var(--ink-muted);
+  text-align: center;
+  text-wrap: pretty;
+}
+
+.an__empty strong {
+  color: var(--ink);
+}
+
+@media (min-width: 60rem) {
+  .an,
+  .an__head {
+    padding-inline: var(--sp-5);
+  }
+
+  .an__grid {
+    grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+  }
+}

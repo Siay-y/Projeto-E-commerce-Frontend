@@ -8,7 +8,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
  * Botao do design system.
  *
  * Usa seletor de atributo sobre o <button> nativo de proposito: assim o
- * elemento continua sendo um botao de verdade — type, form, disabled, foco e
+ * elemento continua sendo um botao de verdade: type, form, disabled, foco e
  * semantica de leitor de tela vem de graca, sem reimplementacao.
  *
  * A assinatura visual e a inversao: como a paleta e so preto/branco/cinza,

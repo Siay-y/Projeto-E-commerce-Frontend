@@ -1,0 +1,76 @@
+<div class="ft">
+  <div class="ft__top">
+    <div class="ft__brand">
+      <app-logo [size]="34" />
+
+      <p class="ft__pitch">
+        Camisas, acessórios, action figures, cosplay e réplicas dos animes que
+        você acompanha. Feitos por quem também está esperando o próximo episódio.
+      </p>
+
+      <ul class="ft__social">
+        @for (social of socials; track social.network) {
+          <li>
+            <a
+              class="ft__social-link"
+              [href]="social.href"
+              target="_blank"
+              rel="noopener noreferrer"
+              [attr.aria-label]="social.label"
+            >
+              <app-social-icon [network]="social.network" />
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <nav class="ft__nav" aria-label="Mapa do site">
+      @for (section of sections; track section.title) {
+        <div class="ft__col">
+          <h2 class="ft__col-title">{{ section.title }}</h2>
+
+          <ul class="ft__list">
+            @for (link of section.links; track link.path) {
+              <li>
+                <a class="ft__link" [routerLink]="link.path">{{ link.label }}</a>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </nav>
+  </div>
+
+  <div class="ft__assurance">
+    <div class="ft__pay">
+      <span class="ft__pay-label">Pagamento</span>
+      @for (method of payments; track method) {
+        <span class="ft__chip">{{ method }}</span>
+      }
+    </div>
+
+    <p class="ft__secure">
+      <app-icon name="shield" [size]="16" />
+      Compra segura. Seus dados nunca são vendidos nem repassados.
+    </p>
+  </div>
+
+  <div class="ft__legal">
+    <div class="ft__legal-id">
+      <p>© {{ year }} {{ store.name }}. Todos os direitos reservados.</p>
+      <p>{{ store.legalName }}, CNPJ {{ store.cnpj }}</p>
+      <p>
+        <a class="ft__mail" [href]="'mailto:' + store.email">{{ store.email }}</a>
+      </p>
+    </div>
+
+    <ul class="ft__legal-links">
+      @for (link of legal; track link.path) {
+        <li>
+          <a class="ft__link" [routerLink]="link.path">{{ link.label }}</a>
+        </li>
+      }
+    </ul>
+  </div>
+</div>

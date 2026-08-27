@@ -1,0 +1,75 @@
+// =============================================================================
+// A aparencia da diretiva `appPointerTrack`.
+// =============================================================================
+
+.pointer-track {
+  --pt-x: 50%;
+  --pt-y: 50%;
+  --pt-nx: 0;
+  --pt-ny: 0;
+
+  --pt-tilt: 6deg;
+  --pt-lift: 0px;
+  --pt-glow: 9rem;
+
+  position: relative;
+
+  // O `-1` do rotateY nao e engano: rotateX positivo empurra o topo para tras e
+  // rotateY positivo empurra a direita para tras, entao um eixo tem que ir
+  // contra o outro para o lado apontado vir para frente nos dois.
+  transform: perspective(700px) rotateX(calc(var(--pt-ny) * var(--pt-tilt)))
+    rotateY(calc(-1 * var(--pt-nx) * var(--pt-tilt))) translateZ(var(--pt-lift));
+}
+
+.pointer-track:hover {
+  --pt-lift: 14px;
+  will-change: transform;
+
+  z-index: 1;
+}
+
+// -----------------------------------------------------------------------------
+// O anel que segue o cursor
+// -----------------------------------------------------------------------------
+.pointer-track::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1.5px;
+
+  background: radial-gradient(
+    circle var(--pt-glow) at var(--pt-x) var(--pt-y),
+    var(--accent),
+    color-mix(in oklab, var(--accent) 22%, transparent) 52%,
+    transparent 100%
+  );
+
+  // Recorta o miolo e deixa so a moldura da espessura do `padding`.
+  // `mask-composite` tem que vir depois do atalho `mask`, que o reseta.
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+  pointer-events: none;
+}
+
+.pointer-track:hover::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pointer-track,
+  .pointer-track:hover {
+    transform: none;
+    will-change: auto;
+  }
+
+  .pointer-track::after {
+    background: var(--accent-line);
+  }
+}

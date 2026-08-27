@@ -6,7 +6,9 @@ export type IconName =
   | 'menu'
   | 'close'
   | 'user'
+  | 'chevron-left'
   | 'chevron-right'
+  | 'plus'
   | 'truck'
   | 'shield';
 
@@ -52,8 +54,14 @@ export type IconName =
           <circle cx="12" cy="8" r="3.75" />
           <path d="M4.5 20.5a7.5 7.5 0 0 1 15 0" />
         }
+        @case ('chevron-left') {
+          <path d="M14.5 5.5 8 12l6.5 6.5" />
+        }
         @case ('chevron-right') {
           <path d="M9.5 5.5 16 12l-6.5 6.5" />
+        }
+        @case ('plus') {
+          <path d="M12 5.5v13M5.5 12h13" />
         }
         @case ('truck') {
           <path d="M2.5 6h9.5v9.5H2.5z" />
