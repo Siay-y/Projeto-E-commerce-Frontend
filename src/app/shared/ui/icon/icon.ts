@@ -10,7 +10,8 @@ export type IconName =
   | 'chevron-right'
   | 'plus'
   | 'truck'
-  | 'shield';
+  | 'shield'
+  | 'trash';
 
 @Component({
   selector: 'app-icon',
@@ -72,6 +73,12 @@ export type IconName =
         @case ('shield') {
           <path d="M12 2.9 19 5.5v5.2c0 4.2-2.8 7.9-7 9.3-4.2-1.4-7-5.1-7-9.3V5.5z" />
           <path d="m9 12.1 2.2 2.2 4-4.2" />
+        }
+        @case ('trash') {
+          <path d="M4 6.8h16" />
+          <path d="M9.6 6.8V5.2a1.7 1.7 0 0 1 1.7-1.7h1.4a1.7 1.7 0 0 1 1.7 1.7v1.6" />
+          <path d="M6.6 6.8l.75 12.1a1.9 1.9 0 0 0 1.9 1.8h5.5a1.9 1.9 0 0 0 1.9-1.8l.75-12.1" />
+          <path d="M10.4 10.6v6.2M13.6 10.6v6.2" />
         }
       }
     </svg>

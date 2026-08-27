@@ -78,10 +78,6 @@ export function isSoldOut(availability: Availability): boolean {
   return availability.kind === 'stock' && availability.units <= 0;
 }
 
-export function hasChoice(product: Product): boolean {
-  return (product.options?.values.length ?? 0) > 0;
-}
-
 export function firstAvailable(product: Product): ProductOption | undefined {
   const values = product.options?.values;
   if (!values || values.length === 0) return undefined;

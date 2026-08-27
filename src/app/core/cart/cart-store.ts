@@ -9,6 +9,7 @@ export interface CartLine {
   readonly id: string;
   readonly productId: string;
   readonly slug: string;
+  readonly optionId?: string;
   readonly title: string;
   readonly variant?: string;
   readonly unitPrice: number;
@@ -23,6 +24,7 @@ export function lineFor(
     id: option ? `${product.id}:${option.id}` : product.id,
     productId: product.id,
     slug: product.slug,
+    optionId: option?.id,
     title: product.title,
     variant: option?.label,
     unitPrice: priceOf(product, option),
@@ -31,9 +33,18 @@ export function lineFor(
 
 export const FREE_SHIPPING_FROM = 199;
 
+export const MAX_PER_LINE = 10;
+
+interface Undo {
+  readonly lines: readonly CartLine[];
+  readonly label: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class CartStore {
   private readonly lines = signal<readonly CartLine[]>([]);
+
+  private readonly undoable = signal<Undo | null>(null);
 
   readonly items = this.lines.asReadonly();
 
@@ -46,6 +57,8 @@ export class CartStore {
   );
 
   readonly subtotalLabel = computed(() => formatBRL(this.subtotal()));
+
+  readonly empty = computed(() => this.lines().length === 0);
 
   readonly label = computed(() => {
     const count = this.count();
@@ -67,20 +80,72 @@ export class CartStore {
 
   readonly hasFreeShipping = computed(() => this.subtotal() >= FREE_SHIPPING_FROM);
 
+  readonly shippingProgress = computed(() =>
+    Math.min(1, this.subtotal() / FREE_SHIPPING_FROM),
+  );
+
+  /** Texto do aviso de desfazer, ou `null` quando não há o que desfazer. */
+  readonly undoLabel = computed(() => this.undoable()?.label ?? null);
+
   quantityOf(id: string): number {
     return this.lines().find((line) => line.id === id)?.quantity ?? 0;
   }
 
   add(item: Omit<CartLine, 'quantity'>, quantity = 1): void {
     if (quantity <= 0) return;
+    this.undoable.set(null);
 
     this.lines.update((lines) => {
       const known = lines.some((line) => line.id === item.id);
       if (!known) return [...lines, { ...item, quantity }];
 
       return lines.map((line) =>
-        line.id === item.id ? { ...line, quantity: line.quantity + quantity } : line,
+        line.id === item.id
+          ? { ...line, quantity: Math.min(MAX_PER_LINE, line.quantity + quantity) }
+          : line,
       );
     });
+  }
+
+  setQuantity(id: string, quantity: number): void {
+    if (quantity <= 0) {
+      this.remove(id);
+      return;
+    }
+
+    this.undoable.set(null);
+    this.lines.update((lines) =>
+      lines.map((line) =>
+        line.id === id ? { ...line, quantity: Math.min(MAX_PER_LINE, quantity) } : line,
+      ),
+    );
+  }
+
+  remove(id: string): void {
+    const before = this.lines();
+    const line = before.find((candidate) => candidate.id === id);
+    if (!line) return;
+
+    this.undoable.set({ lines: before, label: `${line.title} foi removido` });
+    this.lines.set(before.filter((candidate) => candidate.id !== id));
+  }
+
+  clear(): void {
+    if (this.lines().length === 0) return;
+
+    this.undoable.set({ lines: this.lines(), label: 'Carrinho esvaziado' });
+    this.lines.set([]);
+  }
+
+  undo(): void {
+    const memory = this.undoable();
+    if (!memory) return;
+
+    this.lines.set(memory.lines);
+    this.undoable.set(null);
+  }
+
+  dismissUndo(): void {
+    this.undoable.set(null);
   }
 }

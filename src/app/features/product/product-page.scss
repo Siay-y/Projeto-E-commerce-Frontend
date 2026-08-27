@@ -236,42 +236,6 @@
   padding-inline: var(--sp-4);
 }
 
-// -----------------------------------------------------------------------------
-// Produto inexistente
-// -----------------------------------------------------------------------------
-.pd__gone {
-  max-width: 34rem;
-  margin: 0 auto;
-  padding: var(--sp-9) var(--sp-4);
-  text-align: center;
-}
-
-.pd__gone-mark {
-  display: inline-flex;
-  color: var(--ink-subtle);
-  opacity: 0.5;
-}
-
-.pd__gone-title {
-  margin-top: var(--sp-4);
-  font-size: var(--fs-xl);
-  text-wrap: balance;
-}
-
-.pd__gone-text {
-  margin-top: var(--sp-3);
-  color: var(--ink-muted);
-  line-height: var(--lh-normal);
-  text-wrap: pretty;
-}
-
-.pd__gone-link {
-  display: inline-block;
-  margin-top: var(--sp-5);
-  color: var(--accent);
-  font-weight: 600;
-}
-
 @media (min-width: 60rem) {
   .pd,
   .pd__crumb,

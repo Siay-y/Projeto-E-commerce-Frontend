@@ -90,6 +90,35 @@ describe('CartStore', () => {
     expect(cart.shippingHint()).toContain('liberado');
   });
 
+  it('respeita o teto por linha ao somar', () => {
+    const broche = product('broche-fern');
+
+    cart.add(lineFor(broche), 8);
+    cart.add(lineFor(broche), 8);
+
+    expect(cart.count()).toBe(10);
+  });
+
+  it('trata quantidade zero como remoção', () => {
+    const broche = product('broche-fern');
+    cart.add(lineFor(broche));
+
+    cart.setQuantity(lineFor(broche).id, 0);
+
+    expect(cart.empty()).toBe(true);
+    expect(cart.undoLabel()).toContain('removido');
+  });
+
+  it('esquece o desfazer quando outra coisa acontece', () => {
+    cart.add(lineFor(product('broche-fern')));
+    cart.remove(lineFor(product('broche-fern')).id);
+    expect(cart.undoLabel()).not.toBeNull();
+
+    cart.add(lineFor(product('colar-pochita')));
+
+    expect(cart.undoLabel()).toBeNull();
+  });
+
   it('descreve o carrinho para o leitor de tela', () => {
     cart.add(lineFor(product('broche-fern')), 2);
 

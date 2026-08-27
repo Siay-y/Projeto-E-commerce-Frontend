@@ -1,7 +1,9 @@
 :host {
   display: block;
   border-bottom: 1px solid var(--border);
-  background-color: var(--surface-sunken);
+  // `--surface` e nao `--surface-sunken`: com o fundo rebaixado o `--ink-muted`
+  // cai para 4,40:1 no tema claro, abaixo do minimo de 4,5:1 da AA.
+  background-color: var(--surface);
   background-image: var(--pattern-hatch);
   color: var(--ink-muted);
   font-size: var(--fs-xs);

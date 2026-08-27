@@ -109,15 +109,13 @@
     }
   }
 } @else {
-  <section class="pd__gone">
-    <span class="pd__gone-mark" aria-hidden="true">
-      <app-icon-d20 variant="solid" [size]="88" label="" />
-    </span>
-    <h1 class="pd__gone-title">Esse produto não existe mais</h1>
-    <p class="pd__gone-text">
-      O endereço pode ter mudado, ou a peça saiu de linha. Dá para procurar pelo
-      anime dela.
-    </p>
-    <a class="pd__gone-link" routerLink="/animes">Ver todos os animes</a>
-  </section>
+  <app-not-found
+    code="Erro 404"
+    heading="Esse produto não existe mais"
+    text="O endereço pode ter mudado, ou a peça saiu de linha. Dá para procurar
+          pelo anime dela."
+  >
+    <a appButtonLink variant="accent" routerLink="/animes">Ver todos os animes</a>
+    <a appButtonLink variant="secondary" routerLink="/">Voltar ao início</a>
+  </app-not-found>
 }

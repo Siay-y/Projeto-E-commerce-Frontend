@@ -14,6 +14,9 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
  * A assinatura visual e a inversao: como a paleta e so preto/branco/cinza,
  * a interacao acontece em contraste, nao em cor.
  *
+ * Para navegacao, use `ButtonLink` sobre um <a>: link nao tem estado
+ * desabilitado, e forcar um aqui deixaria o elemento clicavel mesmo assim.
+ *
  * @example
  * <button appButton variant="primary" size="lg">Adicionar ao carrinho</button>
  */

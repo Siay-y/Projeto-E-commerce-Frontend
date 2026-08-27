@@ -40,7 +40,7 @@ describe('ProductPage', () => {
   it('avisa quando o slug não existe, em vez de mostrar página vazia', async () => {
     const fixture = await open('produto-que-nunca-existiu');
 
-    expect(host(fixture).querySelector('.pd__gone')).not.toBeNull();
+    expect(host(fixture).querySelector('app-not-found')).not.toBeNull();
     expect(host(fixture).querySelector('.pd__title')).toBeNull();
   });
 

@@ -1,0 +1,42 @@
+:host {
+  display: block;
+  padding-bottom: var(--sp-9);
+}
+
+.nfp__departments {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding-inline: var(--sp-4);
+  text-align: center;
+}
+
+.nfp__hint {
+  color: var(--ink-muted);
+  font-size: var(--fs-sm);
+}
+
+.nfp__departments ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-2);
+  margin: var(--sp-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nfp__departments a {
+  display: inline-block;
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-full);
+  color: var(--ink-muted);
+  font-size: var(--fs-sm);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.nfp__departments a:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}

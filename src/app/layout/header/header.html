@@ -15,7 +15,7 @@
         </span>
       </a>
 
-      <button class="hd__action" type="button" [attr.aria-label]="cart.label()">
+      <a class="hd__action" routerLink="/carrinho" [attr.aria-label]="cart.label()">
         <span class="hd__bag">
           <app-icon name="bag" [size]="19" />
           @if (cart.count() > 0) {
@@ -26,7 +26,7 @@
           <span class="hd__stack-top">Carrinho</span>
           <span class="hd__stack-main hd__price">{{ cart.count() > 0 ? cart.subtotalLabel() : 'Vazio' }}</span>
         </span>
-      </button>
+      </a>
 
       <button
         appIconButton

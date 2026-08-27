@@ -1,0 +1,111 @@
+<header class="ct__head">
+  <h1 class="ct__title">{{ heading() }}</h1>
+
+  @if (!cart.empty()) {
+    <button class="ct__clear" type="button" (click)="cart.clear()">
+      Esvaziar carrinho
+    </button>
+  }
+</header>
+
+@if (cart.undoLabel(); as undone) {
+  <p class="ct__undo" role="status">
+    <span>{{ undone }}</span>
+    <button class="ct__undo-do" type="button" (click)="cart.undo()">Desfazer</button>
+    <button
+      class="ct__undo-close"
+      type="button"
+      aria-label="Dispensar aviso"
+      (click)="cart.dismissUndo()"
+    >
+      <app-icon name="close" [size]="16" />
+    </button>
+  </p>
+}
+
+@if (cart.empty()) {
+  <section class="ct__void">
+    <span class="ct__void-mark" aria-hidden="true">
+      <app-icon-d20 variant="solid" [size]="88" label="" />
+    </span>
+    <h2 class="ct__void-title">Ainda não tem nada aqui</h2>
+    <p class="ct__void-text">
+      Escolha o anime que você acompanha e veja o que tem dele na loja.
+    </p>
+    <a class="ct__void-link" routerLink="/animes">Ver todos os animes</a>
+  </section>
+} @else {
+  <div class="ct">
+    <section class="ct__lines" aria-label="Itens do carrinho">
+      <div class="ct__cols" aria-hidden="true">
+        <span></span>
+        <span>Produto</span>
+        <span>Qtd.</span>
+        <span class="ct__col-price">Preço</span>
+        <span></span>
+      </div>
+
+      @for (line of cart.items(); track line.id) {
+        <app-cart-row [line]="line" />
+      }
+    </section>
+
+    <aside class="ct__summary" aria-label="Resumo do pedido">
+      <h2 class="ct__h2">Resumo</h2>
+
+      <dl class="ct__rows">
+        <div class="ct__row">
+          <dt>Subtotal</dt>
+          <dd>{{ cart.subtotalLabel() }}</dd>
+        </div>
+        <div class="ct__row">
+          <dt>Frete</dt>
+          <dd>{{ shippingLabel() }}</dd>
+        </div>
+      </dl>
+
+      <p class="ct__total">
+        <span>Total</span>
+        <strong>{{ cart.subtotalLabel() }}</strong>
+      </p>
+
+      <div class="ct__ship">
+        @if (cart.hasFreeShipping()) {
+          <p class="ct__ship-text" data-earned="true">
+            <app-icon name="truck" [size]="17" />
+            Frete grátis liberado
+          </p>
+        } @else {
+          <p class="ct__ship-text">Faltam {{ missing() }} para o frete grátis</p>
+        }
+
+        <span class="ct__bar" aria-hidden="true">
+          <span class="ct__bar-fill" [style.width]="barWidth()"></span>
+        </span>
+      </div>
+
+      <a
+        appButtonLink
+        class="ct__checkout"
+        variant="accent"
+        size="lg"
+        [block]="true"
+        routerLink="/checkout"
+      >
+        Finalizar compra
+      </a>
+
+      <a class="ct__keep" routerLink="/animes">Continuar comprando</a>
+    </aside>
+  </div>
+
+  @if (suggestions().length > 0) {
+    <app-product-shelf
+      class="ct__shelf"
+      kicker="Dos animes que você levou"
+      heading="Vai bem com o que está no carrinho"
+      [products]="suggestions()"
+      (add)="addSuggestion($event)"
+    />
+  }
+}
