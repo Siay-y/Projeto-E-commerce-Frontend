@@ -10,9 +10,6 @@
   transition: box-shadow var(--dur-slow) var(--ease-out);
 }
 
-// Fio da marca na borda de cima -- nao na de baixo, onde o .hd__rule do
-// departamento ativo (tambem 2px e tambem no acento) o engoliria. Grudado o
-// header, ele vira a primeira linha da viewport.
 :host::before {
   content: '';
   position: absolute;
@@ -106,6 +103,7 @@
   flex-direction: column;
   align-items: flex-start;
   line-height: 1.18;
+  text-align: start;
 }
 
 .hd__stack-top {
@@ -119,6 +117,7 @@
 }
 
 .hd__price {
+  min-width: 5.25rem;
   font-variant-numeric: tabular-nums;
 }
 
@@ -155,9 +154,6 @@
   }
 }
 
-// A faixa de departamentos era so links soltos no ar. Rebaixada e separada por
-// um fio, ela vira uma prateleira -- e o header passa a ter duas alturas em vez
-// de uma mancha unica.
 .hd__shelf {
   display: none;
   border-top: 1px solid var(--border);

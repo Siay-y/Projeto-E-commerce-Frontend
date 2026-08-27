@@ -67,6 +67,10 @@ export class ThemeStore {
 
   private paint(theme: Theme): void {
     this.document.documentElement.setAttribute('data-theme', theme);
+
+    this.document
+      .querySelector('link[rel="icon"][type="image/svg+xml"]')
+      ?.setAttribute('href', `brand/d20-${theme}.svg`);
   }
 
   private remember(theme: Theme): void {

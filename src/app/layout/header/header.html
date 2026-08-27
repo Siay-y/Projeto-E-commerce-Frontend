@@ -24,7 +24,7 @@
         </span>
         <span class="hd__stack hd__stack--optional">
           <span class="hd__stack-top">Carrinho</span>
-          <span class="hd__stack-main hd__price">{{ cart.subtotalLabel() }}</span>
+          <span class="hd__stack-main hd__price">{{ cart.count() > 0 ? cart.subtotalLabel() : 'Vazio' }}</span>
         </span>
       </button>
 
@@ -42,7 +42,6 @@
     </div>
   </div>
 
-  <!-- A prateleira e de largura total; a nav continua limitada ao conteudo. -->
   <div class="hd__shelf">
     <nav class="hd__nav" #navRoot aria-label="Departamentos" (pointerleave)="settle()">
       <ul class="hd__links">
