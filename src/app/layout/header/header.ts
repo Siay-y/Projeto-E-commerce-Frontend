@@ -19,7 +19,9 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map } from 'rxjs';
 
+import { AuthStore } from '../../core/auth/auth-store';
 import { CartStore } from '../../core/cart/cart-store';
+import { PATHS } from '../../core/routing/paths';
 import { Icon } from '../../shared/ui/icon/icon';
 import { IconButton } from '../../shared/ui/icon-button/icon-button';
 import { Logo } from '../../shared/ui/logo/logo';
@@ -58,8 +60,18 @@ export class Header {
   private readonly navRoot = viewChild<ElementRef<HTMLElement>>('navRoot');
   private readonly navLinks = viewChildren<ElementRef<HTMLElement>>('navLink');
 
+  protected readonly PATHS = PATHS;
   protected readonly cart = inject(CartStore);
+  protected readonly auth = inject(AuthStore);
   protected readonly links = NAV_LINKS;
+
+  protected readonly account = computed(() => {
+    if (this.auth.status() === 'desconhecido') return null;
+
+    return this.auth.isLoggedIn()
+      ? { top: `Olá, ${this.auth.shortName()}`, main: 'Sua conta', path: PATHS.account }
+      : { top: 'Olá, visitante', main: 'Entrar', path: PATHS.login };
+  });
 
   protected readonly lifted = signal(false);
   protected readonly compact = signal(false);

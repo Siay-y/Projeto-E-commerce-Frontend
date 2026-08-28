@@ -1,4 +1,5 @@
 import { CATEGORIES } from '../core/catalog/category';
+import { PATHS } from '../core/routing/paths';
 
 export interface FooterLink {
   readonly path: string;
@@ -11,12 +12,12 @@ export interface FooterSection {
 }
 
 export const FOOTER_PAGES: readonly FooterLink[] = [
-  { path: '/rastrear', label: 'Rastrear pedido' },
-  { path: '/trocas', label: 'Trocas e devoluções' },
-  { path: '/entrega', label: 'Prazos e frete' },
-  { path: '/contato', label: 'Fale conosco' },
-  { path: '/termos', label: 'Termos de uso' },
-  { path: '/privacidade', label: 'Política de privacidade' },
+  { path: PATHS.tracking, label: 'Rastrear pedido' },
+  { path: PATHS.returns, label: 'Trocas e devoluções' },
+  { path: PATHS.delivery, label: 'Prazos e frete' },
+  { path: PATHS.contact, label: 'Fale conosco' },
+  { path: PATHS.terms, label: 'Termos de uso' },
+  { path: PATHS.privacy, label: 'Política de privacidade' },
 ];
 
 function page(path: string): FooterLink {
@@ -30,27 +31,34 @@ export const FOOTER_SECTIONS: readonly FooterSection[] = [
   {
     title: 'Comprar',
     links: [
-      { path: '/animes', label: 'Animes' },
+      { path: PATHS.animes, label: 'Animes' },
       ...CATEGORIES.map((category) => ({
-        path: `/${category.slug}`,
+        path: PATHS.category(category.slug).join('/'),
         label: category.label,
       })),
     ],
   },
   {
     title: 'Atendimento',
-    links: [page('/rastrear'), page('/trocas'), page('/entrega'), page('/contato')],
+    links: [
+      page(PATHS.tracking),
+      page(PATHS.returns),
+      page(PATHS.delivery),
+      page(PATHS.contact),
+    ],
   },
   {
     title: 'A loja',
     links: [
-      { path: '/sobre', label: 'Sobre a loja' },
-      { path: '/loot-box', label: 'Loot Box' },
+      { path: PATHS.about, label: 'Sobre a loja' },
+      { path: PATHS.lootBox, label: 'Loot Box' },
+      page(PATHS.terms),
+      page(PATHS.privacy),
     ],
   },
 ];
 
 export const LEGAL_LINKS: readonly FooterLink[] = [
-  page('/termos'),
-  page('/privacidade'),
+  page(PATHS.terms),
+  page(PATHS.privacy),
 ];

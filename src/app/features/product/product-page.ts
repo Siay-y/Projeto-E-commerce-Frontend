@@ -14,6 +14,7 @@ import { CATEGORIES } from '../../core/catalog/category';
 import { flagsFor } from '../../core/catalog/flags';
 import { Product } from '../../core/catalog/product';
 import { RESPONSE_INIT, markNotFound } from '../../core/http/not-found';
+import { PATHS } from '../../core/routing/paths';
 import { ButtonLink } from '../../shared/ui/button/button-link';
 import { IconD20 } from '../../shared/ui/icon-d20/icon-d20';
 import { NotFound } from '../../shared/ui/not-found/not-found';
@@ -48,6 +49,8 @@ export class ProductPage {
 
   private readonly catalog = inject(CatalogStore);
   private readonly cart = inject(CartStore);
+
+  protected readonly PATHS = PATHS;
 
   protected readonly product = computed(() => this.catalog.bySlug(this.slug()));
 

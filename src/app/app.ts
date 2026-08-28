@@ -1,15 +1,19 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, afterNextRender, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { Footer } from './layout/footer/footer';
-import { Header } from './layout/header/header';
-import { UtilityBar } from './layout/utility-bar/utility-bar';
+import { AuthStore } from './core/auth/auth-store';
 
 @Component({
   selector: 'app-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, Header, UtilityBar, Footer],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {}
+export class App {
+  private readonly auth = inject(AuthStore);
+
+  constructor() {
+    afterNextRender(() => void this.auth.restore());
+  }
+}

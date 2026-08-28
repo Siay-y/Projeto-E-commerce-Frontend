@@ -5,6 +5,7 @@ import { CartStore, FREE_SHIPPING_FROM, lineFor } from '../../core/cart/cart-sto
 import { CatalogStore } from '../../core/catalog/catalog-store';
 import { Product } from '../../core/catalog/product';
 import { formatBRL } from '../../core/format/money';
+import { PATHS } from '../../core/routing/paths';
 import { ShippingStore } from '../../core/shipping/shipping-store';
 import { ButtonLink } from '../../shared/ui/button/button-link';
 import { CriticalRoll } from '../../shared/ui/critical-roll/critical-roll';
@@ -33,6 +34,7 @@ const SUGGESTIONS = 8;
   styleUrl: './cart-page.scss',
 })
 export class CartPage {
+  protected readonly PATHS = PATHS;
   protected readonly cart = inject(CartStore);
   private readonly shipping = inject(ShippingStore);
   private readonly catalog = inject(CatalogStore);

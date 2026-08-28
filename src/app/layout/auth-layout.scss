@@ -1,0 +1,98 @@
+@use './chrome.scss';
+
+.al {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100dvh;
+  background:
+    var(--grad-glow),
+    var(--pattern-dots) 0 0 / var(--texture-size) var(--texture-size),
+    var(--canvas);
+}
+
+.al__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
+}
+
+.al__tools {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.al__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--ink-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.al__back:hover {
+  color: var(--ink);
+}
+
+.al__back:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+.al__main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.al__legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3) var(--sp-5);
+  padding: var(--sp-4) var(--sp-5);
+  color: var(--ink-muted);
+  font-size: var(--fs-xs);
+}
+
+.al__legal p {
+  margin: 0;
+}
+
+.al__legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.al__legal-links a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.al__legal-links a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+@media (width < 40rem) {
+  .al__bar,
+  .al__legal {
+    padding-inline: var(--sp-4);
+  }
+
+  .al__back span {
+    display: none;
+  }
+}

@@ -4,6 +4,7 @@ import { CatalogStore } from '../../core/catalog/catalog-store';
 import { CartStore, lineFor } from '../../core/cart/cart-store';
 import { CATEGORIES } from '../../core/catalog/category';
 import { Product } from '../../core/catalog/product';
+import { PATHS } from '../../core/routing/paths';
 import { Button } from '../../shared/ui/button/button';
 import { ProductCard } from '../../shared/ui/product-card/product-card';
 import { ProductShelf } from '../../shared/ui/product-shelf/product-shelf';
@@ -36,7 +37,7 @@ import { ProductShelf } from '../../shared/ui/product-shelf/product-shelf';
           class="ph__shelf"
           kicker="Chegou agora"
           heading="Em alta na guilda"
-          seeAll="/animes"
+          [seeAll]="PATHS.animes"
           [products]="products()"
           (add)="addToCart($event)"
         />
@@ -57,12 +58,11 @@ import { ProductShelf } from '../../shared/ui/product-shelf/product-shelf';
   `,
 })
 export class PlaceholderPage {
+  protected readonly PATHS = PATHS;
+
   readonly heading = input.required<string>();
 
 
-  // Chegam `undefined` nas rotas que nao os declaram: o binder do router zera o
-  // que a rota atual nao tem, em vez de deixar o valor padrao. Testar por
-  // `!== ''` faz toda rota parecer recortada.
   readonly anime = input<string | undefined>(undefined);
 
   readonly category = input<string | undefined>(undefined);
@@ -89,6 +89,9 @@ export class PlaceholderPage {
   });
 
   protected readonly title = computed(() => {
+    const department = this.department();
+    if (department) return department.label;
+
     const anime = this.anime();
     if (!anime) return this.heading();
 

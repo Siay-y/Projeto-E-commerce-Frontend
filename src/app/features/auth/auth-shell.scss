@@ -1,0 +1,163 @@
+:host {
+  display: grid;
+  grid-template-columns: minmax(0, 26rem) minmax(0, 21rem);
+  justify-content: center;
+  gap: var(--sp-8);
+  align-items: center;
+  width: 100%;
+  padding: var(--sp-7) var(--sp-5);
+}
+
+.as__form {
+  min-width: 0;
+}
+
+.as__head {
+  margin-bottom: var(--sp-6);
+}
+
+.as__title {
+  margin: 0;
+  font-size: var(--fs-2xl);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--lh-tight);
+  text-wrap: balance;
+}
+
+.as__sub {
+  margin: var(--sp-2) 0 0;
+  color: var(--ink-muted);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+}
+
+// -----------------------------------------------------------------------------
+// Ficha de aventureiro
+// -----------------------------------------------------------------------------
+.as__sheet {
+  position: relative;
+  overflow: hidden;
+  padding: var(--sp-6) var(--sp-5) var(--sp-5);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+
+.as__grain {
+  position: absolute;
+  inset: 0;
+  background: var(--pattern-hatch);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.as__die {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--sp-5);
+  color: var(--accent);
+  animation: as-float 7s var(--ease-in-out) infinite;
+}
+
+@keyframes as-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(-7px) rotate(4deg);
+  }
+}
+
+.as__kicker {
+  position: relative;
+  margin: 0;
+  color: var(--ink-subtle);
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.as__pitch {
+  position: relative;
+  margin: var(--sp-2) 0 var(--sp-5);
+  font-size: var(--fs-lg);
+  font-weight: 650;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--lh-tight);
+  text-wrap: balance;
+}
+
+.as__attrs {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  margin: 0;
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--border);
+}
+
+.as__attr {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: var(--sp-2);
+}
+
+.as__attr-name {
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.as__leader {
+  border-bottom: 1px dotted var(--border-strong);
+  transform: translateY(-3px);
+}
+
+.as__attr-value {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.as__attr-note {
+  grid-column: 1 / -1;
+  margin: var(--sp-1) 0 0;
+  color: var(--ink-muted);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-normal);
+}
+
+// -----------------------------------------------------------------------------
+// Mobile
+// -----------------------------------------------------------------------------
+@media (width < 62rem) {
+  :host {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sp-6);
+    max-width: 30rem;
+    margin-inline: auto;
+    padding: var(--sp-6) var(--sp-4) var(--sp-7);
+  }
+
+  .as__sheet {
+    order: 2;
+  }
+
+  .as__die {
+    margin-bottom: var(--sp-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .as__die {
+    animation: none;
+  }
+}

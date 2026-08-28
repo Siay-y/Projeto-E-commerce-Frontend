@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 
 import { RESPONSE_INIT, markNotFound } from '../../core/http/not-found';
 import { CATEGORIES } from '../../core/catalog/category';
+import { PATHS } from '../../core/routing/paths';
 import { ButtonLink } from '../../shared/ui/button/button-link';
 import { NotFound } from '../../shared/ui/not-found/not-found';
 
@@ -18,8 +19,8 @@ import { NotFound } from '../../shared/ui/not-found/not-found';
       text="O link pode estar quebrado, ou o endereço mudou. Um teste de percepção
             mal rolado acontece com todo mundo."
     >
-      <a appButtonLink variant="accent" routerLink="/animes">Ver todos os animes</a>
-      <a appButtonLink variant="secondary" routerLink="/">Voltar ao início</a>
+      <a appButtonLink variant="accent" [routerLink]="PATHS.animes">Ver todos os animes</a>
+      <a appButtonLink variant="secondary" [routerLink]="PATHS.home">Voltar ao início</a>
     </app-not-found>
 
     <nav class="nfp__departments" aria-label="Departamentos">
@@ -27,7 +28,7 @@ import { NotFound } from '../../shared/ui/not-found/not-found';
       <ul>
         @for (category of departments; track category.slug) {
           <li>
-            <a [routerLink]="'/' + category.slug">{{ category.label }}</a>
+            <a [routerLink]="PATHS.category(category.slug)">{{ category.label }}</a>
           </li>
         }
       </ul>
@@ -35,6 +36,7 @@ import { NotFound } from '../../shared/ui/not-found/not-found';
   `,
 })
 export class NotFoundPage {
+  protected readonly PATHS = PATHS;
   protected readonly departments = CATEGORIES;
 
   constructor() {

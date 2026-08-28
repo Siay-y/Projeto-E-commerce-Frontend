@@ -121,6 +121,28 @@
   font-weight: 600;
 }
 
+.cd__note {
+  color: var(--ink-muted);
+  font-size: var(--fs-xs);
+}
+
+.cd__note a {
+  color: var(--ink);
+  font-weight: 620;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cd__note a:hover {
+  color: var(--accent);
+}
+
+.cd__note a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cd__die,
   :host([data-state='rolling']) .cd__die,

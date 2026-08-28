@@ -3,7 +3,12 @@ import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 
 import { routes } from '../../app.routes';
+import { PATHS } from '../../core/routing/paths';
 import { Header } from './header';
+
+const CAMISAS = PATHS.category('camisas').join('/');
+const COSPLAY = PATHS.category('cosplay').join('/');
+const ACESSORIOS = PATHS.category('acessorios').join('/');
 
 describe('Header', () => {
   beforeEach(() => {
@@ -33,17 +38,17 @@ describe('Header', () => {
     const router = TestBed.inject(Router);
     const host = fixture.nativeElement as HTMLElement;
 
-    await router.navigate(['/camisas']);
+    await router.navigateByUrl(CAMISAS);
     await fixture.whenStable();
-    expect(activeHref(host)).toBe('/camisas');
+    expect(activeHref(host)).toBe(CAMISAS);
 
-    await router.navigate(['/cosplay']);
+    await router.navigateByUrl(COSPLAY);
     await fixture.whenStable();
-    expect(activeHref(host)).toBe('/cosplay');
+    expect(activeHref(host)).toBe(COSPLAY);
   });
 
   it('marca exatamente um link por vez', async () => {
-    const host = await renderAt('/acessorios');
+    const host = await renderAt(ACESSORIOS);
     expect(host.querySelectorAll('.hd__link[data-active]')).toHaveLength(1);
   });
 

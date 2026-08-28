@@ -1,4 +1,5 @@
 import { CATEGORIES } from '../core/catalog/category';
+import { PATHS } from '../core/routing/paths';
 
 export interface NavLink {
   readonly path: string;
@@ -6,9 +7,9 @@ export interface NavLink {
 }
 
 export const NAV_LINKS: readonly NavLink[] = [
-  { path: '/animes', label: 'Animes' },
+  { path: PATHS.animes, label: 'Animes' },
   ...CATEGORIES.map((category) => ({
-    path: `/${category.slug}`,
+    path: PATHS.category(category.slug).join('/'),
     label: category.label,
   })),
 ];

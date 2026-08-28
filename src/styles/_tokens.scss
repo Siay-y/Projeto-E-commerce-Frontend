@@ -82,6 +82,16 @@
 
   --focus-ring: var(--accent);
 
+  // ---------------------------------------------------------------------------
+  // Estados de formulario.
+  // ---------------------------------------------------------------------------
+  --danger: var(--ink);
+  --danger-line: var(--ink);
+  --danger-soft: color-mix(in oklab, var(--ink) 6%, transparent);
+
+  --ok: var(--ink);
+  --ok-soft: color-mix(in oklab, var(--ink) 6%, transparent);
+
   --veil-hover: color-mix(in oklab, var(--ink) 7%, transparent);
   --veil-press: color-mix(in oklab, var(--ink) 13%, transparent);
   --veil-glass: color-mix(in oklab, var(--surface) 72%, transparent);

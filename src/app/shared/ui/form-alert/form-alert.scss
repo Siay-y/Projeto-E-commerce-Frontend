@@ -1,0 +1,31 @@
+:host {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-sunken);
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+}
+
+:host app-icon {
+  flex: none;
+  margin-top: 1px;
+}
+
+:host([data-tone='erro']) {
+  border-color: var(--danger-line);
+  box-shadow: inset 2px 0 0 var(--danger-line);
+  font-weight: 560;
+}
+
+:host([data-tone='ok']) {
+  box-shadow: inset 2px 0 0 var(--border-strong);
+}
+
+.fa__text {
+  min-width: 0;
+}

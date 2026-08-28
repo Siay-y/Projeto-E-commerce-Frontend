@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
+import { AuthStore } from '../../core/auth/auth-store';
+import { PATHS } from '../../core/routing/paths';
 import { Icon } from '../../shared/ui/icon/icon';
 import { NavLink } from '../nav-links';
 
@@ -27,9 +29,9 @@ import { NavLink } from '../nav-links';
       </ul>
 
       <div class="sheet__foot">
-        <a class="sheet__account" routerLink="/conta">
+        <a class="sheet__account" [routerLink]="account().path">
           <app-icon name="user" [size]="18" />
-          Entrar ou criar conta
+          {{ account().label }}
         </a>
 
         <p class="sheet__note">
@@ -43,4 +45,12 @@ import { NavLink } from '../nav-links';
 export class NavSheet {
   readonly links = input.required<readonly NavLink[]>();
   readonly open = input(false);
+
+  private readonly auth = inject(AuthStore);
+
+  protected readonly account = computed(() =>
+    this.auth.isLoggedIn()
+      ? { path: PATHS.account, label: 'Sua conta' }
+      : { path: PATHS.login, label: 'Entrar ou criar conta' },
+  );
 }

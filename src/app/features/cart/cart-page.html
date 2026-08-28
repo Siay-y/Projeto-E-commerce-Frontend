@@ -32,7 +32,7 @@
     <p class="ct__void-text">
       Escolha o anime que você acompanha e veja o que tem dele na loja.
     </p>
-    <a class="ct__void-link" routerLink="/animes">Ver todos os animes</a>
+    <a class="ct__void-link" [routerLink]="PATHS.animes">Ver todos os animes</a>
   </section>
 } @else {
   <div class="ct">
@@ -95,12 +95,12 @@
         variant="accent"
         size="lg"
         [block]="true"
-        routerLink="/checkout"
+        [routerLink]="PATHS.checkout"
       >
         Finalizar compra
       </a>
 
-        <a class="ct__keep" routerLink="/animes">Continuar comprando</a>
+        <a class="ct__keep" [routerLink]="PATHS.animes">Continuar comprando</a>
       </aside>
     </div>
   </div>

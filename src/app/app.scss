@@ -1,27 +1,3 @@
 :host {
   display: block;
 }
-
-main:focus {
-  outline: none;
-}
-
-.skip {
-  position: absolute;
-  top: var(--sp-2);
-  left: var(--sp-2);
-  z-index: var(--z-toast);
-  padding: var(--sp-3) var(--sp-4);
-  border-radius: var(--r-md);
-  background: var(--surface-inverse);
-  color: var(--ink-inverse);
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  text-decoration: none;
-  transform: translateY(-200%);
-  transition: transform var(--dur-base) var(--ease-out);
-}
-
-.skip:focus-visible {
-  transform: none;
-}

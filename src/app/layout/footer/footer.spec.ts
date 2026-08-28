@@ -1,12 +1,30 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { Routes, provideRouter } from '@angular/router';
 
 import { routes } from '../../app.routes';
 import { STORE } from '../../core/store/store-info';
 import { FOOTER_PAGES, FOOTER_SECTIONS, LEGAL_LINKS } from '../footer-links';
 import { SOCIAL_LINKS } from '../social-links';
 import { Footer } from './footer';
+
+function declaredMatchers(config: Routes, prefix = ''): RegExp[] {
+  const out: RegExp[] = [];
+
+  for (const route of config) {
+    if (route.path === undefined || route.path === '**') continue;
+
+    const full = route.path === '' ? prefix : `${prefix}/${route.path}`;
+
+    if (route.path !== '') {
+      out.push(new RegExp(`^${full.replace(/:[^/]+/g, '[^/]+')}$`));
+    }
+
+    if (route.children) out.push(...declaredMatchers(route.children, full));
+  }
+
+  return out;
+}
 
 describe('Footer', () => {
   let host: HTMLElement;
@@ -69,9 +87,7 @@ describe('Footer', () => {
   });
 
   it('não deixa nenhum link interno sem rota', () => {
-    const declared = new Set(
-      routes.filter((route) => route.path !== undefined).map((route) => `/${route.path}`),
-    );
+    const matchers = declaredMatchers(routes);
 
     const internal = [
       ...FOOTER_SECTIONS.flatMap((section) => section.links),
@@ -79,7 +95,10 @@ describe('Footer', () => {
     ];
 
     for (const link of internal) {
-      expect(declared.has(link.path)).toBe(true);
+      expect(
+        matchers.some((matcher) => matcher.test(link.path)),
+        `sem rota declarada: ${link.path}`,
+      ).toBe(true);
     }
   });
 

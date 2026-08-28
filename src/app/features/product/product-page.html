@@ -1,9 +1,9 @@
 @if (product(); as product) {
   <nav class="pd__crumb" aria-label="Trilha de navegação">
     <ol>
-      <li><a routerLink="/">Início</a></li>
+      <li><a [routerLink]="PATHS.home">Início</a></li>
       <li>
-        <a [routerLink]="['/animes', product.anime.slug]">{{ product.anime.name }}</a>
+        <a [routerLink]="PATHS.anime(product.anime.slug)">{{ product.anime.name }}</a>
       </li>
       <li aria-current="page">{{ product.title }}</li>
     </ol>
@@ -31,7 +31,7 @@
 
       <div class="pd__meta">
         @if (department(); as department) {
-          <a class="pd__tag" [routerLink]="'/' + department.slug">{{ department.label }}</a>
+          <a class="pd__tag" [routerLink]="PATHS.category(department.slug)">{{ department.label }}</a>
         }
 
         @if (product.rating; as rating) {
@@ -90,7 +90,7 @@
       class="pd__shelf"
       kicker="Do mesmo universo"
       [heading]="'Mais de ' + product.anime.name"
-      [seeAll]="'/animes/' + product.anime.slug"
+      [seeAll]="PATHS.anime(product.anime.slug).join('/')"
       [products]="fromAnime()"
       (add)="addRelated($event)"
     />
@@ -102,7 +102,7 @@
         class="pd__shelf"
         kicker="De outros universos"
         [heading]="'Também em ' + department.label"
-        [seeAll]="'/' + department.slug"
+        [seeAll]="PATHS.category(department.slug).join('/')"
         [products]="fromDepartment()"
         (add)="addRelated($event)"
       />
@@ -115,7 +115,7 @@
     text="O endereço pode ter mudado, ou a peça saiu de linha. Dá para procurar
           pelo anime dela."
   >
-    <a appButtonLink variant="accent" routerLink="/animes">Ver todos os animes</a>
-    <a appButtonLink variant="secondary" routerLink="/">Voltar ao início</a>
+    <a appButtonLink variant="accent" [routerLink]="PATHS.animes">Ver todos os animes</a>
+    <a appButtonLink variant="secondary" [routerLink]="PATHS.home">Voltar ao início</a>
   </app-not-found>
 }
