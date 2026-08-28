@@ -1,11 +1,11 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 
 import { Product, ProductOption, priceOf } from '../catalog/product';
 import { formatBRL } from '../format/money';
+import { RollStore } from '../roll/roll-store';
+import { FREE_SHIPPING_FROM } from '../shipping/free-shipping';
 
 export interface CartLine {
-  // Camisa P e camisa M sao linhas distintas, entao a chave e o par
-  // produto + opcao, e nao o id do produto.
   readonly id: string;
   readonly productId: string;
   readonly slug: string;
@@ -31,7 +31,7 @@ export function lineFor(
   };
 }
 
-export const FREE_SHIPPING_FROM = 199;
+export { FREE_SHIPPING_FROM };
 
 export const MAX_PER_LINE = 10;
 
@@ -45,6 +45,15 @@ export class CartStore {
   private readonly lines = signal<readonly CartLine[]>([]);
 
   private readonly undoable = signal<Undo | null>(null);
+
+  private readonly roll = inject(RollStore);
+
+  readonly shippingFrom = computed(() => {
+    const reward = this.roll.reward();
+    if (!reward) return FREE_SHIPPING_FROM;
+
+    return reward.freeShipping ? 0 : reward.shippingFrom;
+  });
 
   readonly items = this.lines.asReadonly();
 
@@ -67,22 +76,24 @@ export class CartStore {
     return `Carrinho, ${count} ${noun}, subtotal ${this.subtotalLabel()}`;
   });
 
-  readonly shippingHint = computed(() => {
-    if (this.count() === 0) {
-      return `Frete grátis acima de ${formatBRL(FREE_SHIPPING_FROM)}`;
-    }
+  readonly hasFreeShipping = computed(() => this.subtotal() >= this.shippingFrom());
 
-    const missing = FREE_SHIPPING_FROM - this.subtotal();
+  readonly shippingHint = computed(() => {
+    const floor = this.shippingFrom();
+    if (floor === 0) return 'Frete grátis liberado';
+
+    if (this.count() === 0) return `Frete grátis acima de ${formatBRL(floor)}`;
+
+    const missing = floor - this.subtotal();
     return missing > 0
       ? `Faltam ${formatBRL(missing)} para o frete grátis`
       : 'Frete grátis liberado';
   });
 
-  readonly hasFreeShipping = computed(() => this.subtotal() >= FREE_SHIPPING_FROM);
-
-  readonly shippingProgress = computed(() =>
-    Math.min(1, this.subtotal() / FREE_SHIPPING_FROM),
-  );
+  readonly shippingProgress = computed(() => {
+    const floor = this.shippingFrom();
+    return floor === 0 ? 1 : Math.min(1, this.subtotal() / floor);
+  });
 
   /** Texto do aviso de desfazer, ou `null` quando não há o que desfazer. */
   readonly undoLabel = computed(() => this.undoable()?.label ?? null);

@@ -13,6 +13,7 @@ const BASE: Product = {
   category: 'acessorios',
   price: 149.9,
   availability: { kind: 'stock', units: 10 },
+  packed: { length: 20, width: 15, height: 5, weight: 0.3 },
 };
 
 describe('ProductCard', () => {

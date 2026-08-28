@@ -50,7 +50,10 @@
       }
     </section>
 
-    <aside class="ct__summary" aria-label="Resumo do pedido">
+    <div class="ct__side">
+      <app-critical-roll />
+
+      <aside class="ct__summary" aria-label="Resumo do pedido">
       <h2 class="ct__h2">Resumo</h2>
 
       <dl class="ct__rows">
@@ -66,7 +69,7 @@
 
       <p class="ct__total">
         <span>Total</span>
-        <strong>{{ cart.subtotalLabel() }}</strong>
+        <strong>{{ totalLabel() }}</strong>
       </p>
 
       <div class="ct__ship">
@@ -84,6 +87,8 @@
         </span>
       </div>
 
+      <app-shipping-calc />
+
       <a
         appButtonLink
         class="ct__checkout"
@@ -95,8 +100,9 @@
         Finalizar compra
       </a>
 
-      <a class="ct__keep" routerLink="/animes">Continuar comprando</a>
-    </aside>
+        <a class="ct__keep" routerLink="/animes">Continuar comprando</a>
+      </aside>
+    </div>
   </div>
 
   @if (suggestions().length > 0) {

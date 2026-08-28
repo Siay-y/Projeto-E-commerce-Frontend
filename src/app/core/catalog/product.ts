@@ -30,6 +30,24 @@ export interface Product {
   readonly specs?: readonly ProductSpec[];
 
   readonly options?: ProductOptions;
+
+  readonly packed: Packed;
+}
+
+/**
+ * Medida da caixa, que não é a medida da peça.
+ *
+ * A Dragon Slayer tem 1,45 m montada e viaja desmontada em quatro partes: a
+ * ficha tecnica mostra o tamanho montado, a transportadora cobra pelo tamanho
+ * da caixa. Guardar um numero so faz o frete mentir ou a ficha mentir.
+ */
+export interface Packed {
+  /** Centímetros. */
+  readonly length: number;
+  readonly width: number;
+  readonly height: number;
+  /** Quilos. */
+  readonly weight: number;
 }
 
 export type Availability =
@@ -54,6 +72,7 @@ export interface ProductOption {
   readonly note?: string;
   readonly price?: number;
   readonly availability?: Availability;
+  readonly packed?: Packed;
 }
 
 export interface ProductOptions {
@@ -72,6 +91,10 @@ export function priceOf(product: Product, option?: ProductOption): number {
 
 export function availabilityOf(product: Product, option?: ProductOption): Availability {
   return option?.availability ?? product.availability;
+}
+
+export function packedOf(product: Product, option?: ProductOption): Packed {
+  return option?.packed ?? product.packed;
 }
 
 export function isSoldOut(availability: Availability): boolean {

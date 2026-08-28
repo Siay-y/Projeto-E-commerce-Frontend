@@ -39,6 +39,9 @@ testem.log
 /typings
 __screenshots__/
 
+# Grafo de conhecimento (graphify)
+/graphify-out
+
 # System files
 .DS_Store
 Thumbs.db

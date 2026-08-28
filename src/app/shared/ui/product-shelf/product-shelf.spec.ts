@@ -13,6 +13,7 @@ const PRODUCTS: readonly Product[] = Array.from({ length: 6 }, (_, i) => ({
   category: 'camisas' as const,
   price: 100 + i,
   availability: { kind: 'stock' as const, units: 5 },
+  packed: { length: 20, width: 15, height: 5, weight: 0.3 },
 }));
 
 function fixGeometry(el: Element, values: Record<string, number>) {
